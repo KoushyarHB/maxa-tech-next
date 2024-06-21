@@ -14,7 +14,7 @@ export interface IProduct {
   numReviews: number;
   thumbnailImage: string;
   largeImage: string;
-  categoryPath: string;
+  categoryName: string;
   brandName: string;
   color: string;
   dimensions: Dimensions;
@@ -29,6 +29,6 @@ export interface Dimensions {
 
 export interface Discount {
   percent: number;
-  startDate: string;
-  endDate: string;
+  startDate: string | null;
+  endDate: string | null;
 }

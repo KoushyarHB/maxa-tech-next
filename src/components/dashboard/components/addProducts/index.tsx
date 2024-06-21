@@ -73,7 +73,7 @@ function AddProducts() {
   const handleClick = () => {
     setDisabled((prev) => !prev);
     if (disabled) {
-      setValue("discount.percent", "");
+      setValue("discount.percent", 0);
       setValue("discount.startDate", "");
       setValue("discount.endDate", "");
     }
