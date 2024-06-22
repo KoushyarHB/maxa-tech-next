@@ -6,6 +6,7 @@ import TableProducts from "./tableProducts";
 import AddProducts from "./addProducts";
 import ChangeProducts from "./changeProducts";
 import { Box, Breadcrumbs, Link, Stack } from "@mui/material";
+import QuantityTab from "./quantity/quantity";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -63,7 +64,7 @@ export default function BasicTabs() {
     </Link>,
   ];
   return (
-    <Box sx={{ width: "100%", height: "62vh", mb: "150px" }}>
+    <Box sx={{ width: "100%", height: "62vh", mb: "170px" }}>
       <Stack sx={{ mb: "48px" }} spacing={2} p={2}>
         <Breadcrumbs
           separator={
@@ -81,18 +82,14 @@ export default function BasicTabs() {
           aria-label="basic tabs example"
         >
           <Tab label="Products" {...a11yProps(0)} />
-          <Tab label="add" {...a11yProps(1)} />
-          <Tab label="delete/edit" {...a11yProps(2)} />
+          <Tab label="quantity" {...a11yProps(1)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
         <TableProducts />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <AddProducts />
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={2}>
-        <ChangeProducts />
+        <QuantityTab />
       </CustomTabPanel>
     </Box>
   );
