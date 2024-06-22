@@ -6,7 +6,7 @@ import TableProducts from "./tableProducts";
 import AddProducts from "./addProducts";
 import ChangeProducts from "./changeProducts";
 import { Box, Breadcrumbs, Link, Stack } from "@mui/material";
-import QuantityTab from "./quantity/quantity";
+import QuantityTab from "./quantity";
 
 interface TabPanelProps {
   children?: React.ReactNode;
