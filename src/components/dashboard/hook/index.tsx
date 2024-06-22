@@ -7,6 +7,7 @@ export const useGetAllProductsToDashboard = () => {
   return useQuery<IProduct[]>({
     queryKey: ["products-Dashboard"],
     queryFn: getAllProductsToDashboard,
+    refetchInterval: 500,
   });
 };
 
@@ -20,12 +21,7 @@ export const usePostData = () => {
 export const useEditData = () => {
   return useMutation({
     mutationKey: ["edit-data"],
-    mutationFn: ({
-      id,
-      product,
-    }: {
-      id?: number | undefined;
-      product: IProduct;
-    }) => editData(id, product),
+    mutationFn: ({ id, product }: { id: number; product: IProduct }) =>
+      editData(id, product),
   });
 };

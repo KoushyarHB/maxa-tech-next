@@ -19,6 +19,7 @@ export interface IProduct {
   color: string;
   dimensions: Dimensions;
   discount: Discount;
+  availableQuantity: number;
 }
 
 export interface Dimensions {

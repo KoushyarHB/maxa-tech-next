@@ -31,6 +31,7 @@ function AddProducts() {
     formState: { errors },
   } = useForm<IProduct>();
 
+
   const onSubmit = (formData: IProduct) => {
     const data = {
       ...formData,
@@ -39,32 +40,34 @@ function AddProducts() {
       customerRating: Math.round(Math.random() * 5 * 10) / 10,
       numReviews: Math.floor(Math.random() * 5000),
       upc: Math.random().toString(36).substring(7),
-      currency: "USD", // Hardcoded currency
+      currency: "USD",
       availableOnline: Math.random() < 0.5,
       availableInStore: Math.random() < 0.5,
       seller: "Random Seller",
       sellerId: "random123",
       largeImage: "https://example.com/random-large-image.jpg",
-      categoryPath: "Random Category",
-      brandName: "Random Brand",
     };
 
     if (!disabled) {
       data.discount = {
-        percent: formData.discount.percent || 0,
-        startDate: formData.discount.startDate || null,
-        endDate: formData.discount.endDate || null,
+        percent: formData.discount?.percent || 0,
+        startDate: formData.discount?.startDate || null,
+        endDate: formData.discount?.endDate || null,
       };
     }
 
     mutate(data, {
-      onSuccess: () => {
-        toast.success("Product added successfully");
-        reset();
+      onSuccess: (response: any) => {
+        if (response.message === "Product with the same ID or name already exists") {
+          toast.warning(response.message);
+        } else {
+          toast.success("Product added successfully");
+          reset();
+        }
       },
-      onError: (err) => {
-        toast.error(`Product not added successfully: ${err.message}`);
-        console.error(err);
+      onError: (error: any) => {
+        toast.error(`Product not added successfully: ${error.message}`);
+        console.error(error);
       },
     });
     console.log(data);
@@ -110,7 +113,7 @@ function AddProducts() {
             <TextField
               fullWidth
               id="outlined-basic-name"
-              label="Name Product"
+              label="Product Name"
               variant="outlined"
               {...register("name", { required: "Name is required" })}
               error={!!errors.name}
@@ -126,6 +129,17 @@ function AddProducts() {
               })}
               error={!!errors.categoryName}
               helperText={errors.categoryName?.message}
+            />
+            <TextField
+              fullWidth
+              id="outlined-basic-category"
+              label="Brand"
+              variant="outlined"
+              {...register("brandName", {
+                required: "Brand Name is required",
+              })}
+              error={!!errors.brandName}
+              helperText={errors.brandName?.message}
             />
             <TextField
               fullWidth
@@ -168,7 +182,11 @@ function AddProducts() {
               id="outlined-basic-intro"
               label="Intro"
               variant="outlined"
-              {...register("shortDescription")}
+              {...register("shortDescription", {
+                required: "Intro is required",
+              })}
+              error={!!errors.shortDescription}
+              helperText={errors.shortDescription?.message}
             />
           </Box>
           <TextField
@@ -298,6 +316,7 @@ function AddProducts() {
                       message:
                         "Width must be a valid number (up to 2 decimal places)",
                     },
+                    required: "Width is required",
                   })}
                   error={!!errors.dimensions?.width}
                   helperText={errors.dimensions?.width?.message}
@@ -313,6 +332,7 @@ function AddProducts() {
                       message:
                         "Height must be a valid number (up to 2 decimal places)",
                     },
+                    required: "Height is required",
                   })}
                   error={!!errors.dimensions?.height}
                   helperText={errors.dimensions?.height?.message}
@@ -328,6 +348,7 @@ function AddProducts() {
                       message:
                         "Depth must be a valid number (up to 2 decimal places)",
                     },
+                    required: "Depth is required",
                   })}
                   error={!!errors.dimensions?.depth}
                   helperText={errors.dimensions?.depth?.message}
