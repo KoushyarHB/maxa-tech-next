@@ -7,66 +7,34 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { useGetAllProductsToDashboard } from "@/components/dashboard/hook/index";
 import { IProduct } from "@/components/home/hooks/types";
-import { Box, CircularProgress } from "@mui/material";
-
-interface Column {
-  id: "thumbnailImage" | "name" | "id" | "price" | "categoryName" | "brandName";
-  label: string;
-  minWidth?: number;
-  align?: "right" | "left" | "center";
-  format?: (
-    value: number | string | undefined
-  ) => string | JSX.Element | undefined;
-}
-
-const columns: readonly Column[] = [
-  { id: "id", label: "ID", minWidth: 100, align: "center" },
-  {
-    id: "thumbnailImage",
-    label: "Image",
-    minWidth: 100,
-    align: "left",
-    format: (value: string) => (
-      <Box
-        component="img"
-        src={value as string}
-        alt="Product"
-        style={{ width: 50, height: 50 }}
-      />
-    ),
-  },
-  { id: "name", label: "NameProducts", minWidth: 170, align: "left" },
-  {
-    id: "price",
-    label: "Price",
-    minWidth: 100,
-    align: "center",
-    format: (value: number) => `$${value.toFixed(2)}`,
-  },
-  { id: "categoryName", label: "Category", minWidth: 100, align: "center" },
-  { id: "brandName", label: "Brand", minWidth: 100, align: "center" },
-];
+import {
+  Box,
+  Button,
+  CircularProgress,
+  IconButton,
+  Modal,
+  Typography,
+} from "@mui/material";
+import DataSaverOnOutlinedIcon from "@mui/icons-material/DataSaverOnOutlined";
+import { useGetAllProductsToDashboard } from "../../hook";
+import Swal from "sweetalert2";
+import { BASE_URL } from "@/constants/urls";
+import axios from "axios";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import EditProducts from "../modalEdit";
+import AddProducts from "../addProducts";
 
 export default function TableProducts() {
   const { data, isLoading, error } = useGetAllProductsToDashboard();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-  if (isLoading) {
-    return (
-      <div>
-        <CircularProgress />
-      </div>
-    );
-  }
-
-  if (error) {
-    return <div>Error loading data</div>;
-  }
-
-  const rows = data || [];
+  const [selectedProduct, setSelectedProduct] = React.useState<IProduct | null>(
+    null
+  );
+  const [isModalEditOpen, setIsModalEditOpen] = React.useState(false);
+  const [isModalAddOpen, setIsModalAddOpen] = React.useState(false);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -79,52 +47,203 @@ export default function TableProducts() {
     setPage(0);
   };
 
+  const handleEdit = (product: IProduct) => {
+    setSelectedProduct(product);
+    setIsModalEditOpen(true);
+  };
+
+  async function handleDelete(id: number) {
+    console.log(id);
+    const result = await Swal.fire({
+      title: "Sure you want to delete this item?",
+      text: "This action is irreversible.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, I'm sure",
+      cancelButtonText: "Cancel",
+    });
+    if (result.isConfirmed) {
+      try {
+        await axios.delete(`${BASE_URL}/products/${id}`);
+        Swal.fire({
+          title: "Deleted",
+          text: "Item was deleted successfuly.",
+          icon: "success",
+        });
+      } catch (error) {
+        Swal.fire({
+          title: "Error",
+          text: "Someething went wrong.",
+          icon: "error",
+        });
+      }
+    } else {
+      Swal.fire({
+        title: "Canceled",
+        text: "Deletion canceled.",
+        icon: "info",
+      });
+    }
+  }
+
+  const handleCloseModalEdit = () => {
+    setIsModalEditOpen(false);
+  };
+  const handleCloseModalAdd = () => {
+    setIsModalAddOpen(false);
+  };
+
+  if (isLoading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <div>Error loading data</div>
+      </Box>
+    );
+  }
+
+  const rows = data || [];
+
+  const handleAdd = () => {
+    setIsModalAddOpen(true);
+  };
+
   return (
-    <Paper sx={{ width: "100%", overflow: "hidden" }}>
-      <TableContainer sx={{ maxHeight: 440 }}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                    {columns.map((column) => {
-                      const value = row[column.id as keyof IProduct];
-                      return (
-                        <TableCell key={column.id} align={column.align}>
-                          {column.format ? column.format(value as any) : value}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </Paper>
+    <Box>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          pr: "35px",
+          borderRadius: "10px",
+          mb: "15px",
+        }}
+      >
+        <Typography sx={{ pl: "15px", fontWeight: "medium", fontSize: "20px" }}>
+          Add Product
+        </Typography>
+        <Button onClick={handleAdd}>
+          <DataSaverOnOutlinedIcon fontSize="large" color="success"/>
+        </Button>
+      </Box>
+      <Box>
+        <Paper sx={{ width: "100%", overflow: "hidden" }}>
+          <TableContainer sx={{ maxHeight: 440 }}>
+            <Table stickyHeader aria-label="sticky table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>ID</TableCell>
+                  <TableCell align="left">Image</TableCell>
+                  <TableCell align="left">NameProducts</TableCell>
+                  <TableCell align="center">Price</TableCell>
+                  <TableCell align="center">Category</TableCell>
+                  <TableCell align="center">Brand</TableCell>
+                  <TableCell align="center">Actions</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row) => (
+                    <TableRow hover key={row.id}>
+                      <TableCell align="center">{row.id}</TableCell>
+                      <TableCell align="left">
+                        <Box
+                          component="img"
+                          src={row.thumbnailImage}
+                          alt="Product"
+                          style={{ width: 50, height: 50 }}
+                        />
+                      </TableCell>
+                      <TableCell align="left">{row.name}</TableCell>
+                      <TableCell align="center">
+                        ${row.price.toFixed(2)}
+                      </TableCell>
+                      <TableCell align="center">{row.categoryName}</TableCell>
+                      <TableCell align="center">{row.brandName}</TableCell>
+                      <TableCell align="center">
+                        <IconButton onClick={() => handleEdit(row)}>
+                          <EditIcon />
+                        </IconButton>
+                        <IconButton onClick={() => handleDelete(row.id)}>
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[10, 25, 100]}
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+          <Modal open={isModalEditOpen} onClose={handleCloseModalEdit}>
+            <Box
+              sx={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                width: "50%",
+                bgcolor: "background.paper",
+                boxShadow: 24,
+                p: 4,
+              }}
+            >
+              <EditProducts
+                product={selectedProduct}
+                setIsModalOpen={setIsModalEditOpen}
+              />
+            </Box>
+          </Modal>
+          <Modal open={isModalAddOpen} onClose={handleCloseModalAdd}>
+            <Box
+              sx={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                width: "50%",
+                bgcolor: "background.paper",
+                boxShadow: 24,
+                p: 4,
+              }}
+            >
+              <AddProducts />
+            </Box>
+          </Modal>
+        </Paper>
+      </Box>
+    </Box>
   );
 }
