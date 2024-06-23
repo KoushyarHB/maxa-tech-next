@@ -1,11 +1,10 @@
 import React, { ReactNode } from "react";
-import Footer from "./footer";
-import Navbar from "./navbar/components";
 import { Box } from "@mui/material";
+import Navbar from "./navbar/components";
 
 type LayoutProps = { children: ReactNode };
 
-export default function Layout({ children }: LayoutProps) {
+export default function SecondaryLayout({ children }: LayoutProps) {
   return (
     <>
       <Navbar />
@@ -19,7 +18,6 @@ export default function Layout({ children }: LayoutProps) {
       >
         {children}
       </Box>
-      <Footer />
     </>
   );
 }

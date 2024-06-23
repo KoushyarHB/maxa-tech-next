@@ -1,5 +1,5 @@
 import SingleProductWidget from "@/components/single-product/components";
-import Layout from "@/layout";
+import MainLayout from "@/layout/mainLayout";
 import { NextPageWithLayout } from "@/pages/_app";
 import React from "react";
 
@@ -8,7 +8,7 @@ const SingleProductPage: NextPageWithLayout = () => {
 };
 
 SingleProductPage.getLayout = function getLayout(page) {
-  return <Layout>{page}</Layout>;
+  return <MainLayout>{page}</MainLayout>;
 };
 
 export default SingleProductPage;
