@@ -18,13 +18,11 @@ import {
 } from "@mui/material";
 import DataSaverOnOutlinedIcon from "@mui/icons-material/DataSaverOnOutlined";
 import { useGetAllProductsToDashboard } from "../../hook";
-import Swal from "sweetalert2";
-import { BASE_URL } from "@/constants/urls";
-import axios from "axios";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import EditProducts from "../modalEdit";
 import AddProducts from "../addProducts";
+import { handleDelete } from "../../services";
 
 export default function TableProducts() {
   const { data, isLoading, error } = useGetAllProductsToDashboard();
@@ -51,42 +49,6 @@ export default function TableProducts() {
     setSelectedProduct(product);
     setIsModalEditOpen(true);
   };
-
-  async function handleDelete(id: number) {
-    console.log(id);
-    const result = await Swal.fire({
-      title: "Sure you want to delete this item?",
-      text: "This action is irreversible.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, I'm sure",
-      cancelButtonText: "Cancel",
-    });
-    if (result.isConfirmed) {
-      try {
-        await axios.delete(`${BASE_URL}/products/${id}`);
-        Swal.fire({
-          title: "Deleted",
-          text: "Item was deleted successfuly.",
-          icon: "success",
-        });
-      } catch (error) {
-        Swal.fire({
-          title: "Error",
-          text: "Someething went wrong.",
-          icon: "error",
-        });
-      }
-    } else {
-      Swal.fire({
-        title: "Canceled",
-        text: "Deletion canceled.",
-        icon: "info",
-      });
-    }
-  }
 
   const handleCloseModalEdit = () => {
     setIsModalEditOpen(false);
@@ -147,7 +109,7 @@ export default function TableProducts() {
           Add Product
         </Typography>
         <Button onClick={handleAdd}>
-          <DataSaverOnOutlinedIcon fontSize="large" color="success"/>
+          <DataSaverOnOutlinedIcon fontSize="large" color="success" />
         </Button>
       </Box>
       <Box>
@@ -156,13 +118,27 @@ export default function TableProducts() {
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
                 <TableRow>
-                  <TableCell>ID</TableCell>
-                  <TableCell align="left">Image</TableCell>
-                  <TableCell align="left">NameProducts</TableCell>
-                  <TableCell align="center">Price</TableCell>
-                  <TableCell align="center">Category</TableCell>
-                  <TableCell align="center">Brand</TableCell>
-                  <TableCell align="center">Actions</TableCell>
+                  <TableCell sx={{ backgroundColor: "#cacaca" }} align="center">
+                    ID
+                  </TableCell>
+                  <TableCell sx={{ backgroundColor: "#cacaca" }} align="left">
+                    Image
+                  </TableCell>
+                  <TableCell sx={{ backgroundColor: "#cacaca" }} align="left">
+                    NameProducts
+                  </TableCell>
+                  <TableCell sx={{ backgroundColor: "#cacaca" }} align="center">
+                    Price
+                  </TableCell>
+                  <TableCell sx={{ backgroundColor: "#cacaca" }} align="center">
+                    Category
+                  </TableCell>
+                  <TableCell sx={{ backgroundColor: "#cacaca" }} align="center">
+                    Brand
+                  </TableCell>
+                  <TableCell sx={{ backgroundColor: "#cacaca" }} align="center">
+                    Actions
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -218,6 +194,7 @@ export default function TableProducts() {
                 bgcolor: "background.paper",
                 boxShadow: 24,
                 p: 4,
+                borderRadius: "5px",
               }}
             >
               <EditProducts
@@ -237,9 +214,10 @@ export default function TableProducts() {
                 bgcolor: "background.paper",
                 boxShadow: 24,
                 p: 4,
+                borderRadius: "5px",
               }}
             >
-              <AddProducts />
+              <AddProducts setIsModalOpen={setIsModalAddOpen} />
             </Box>
           </Modal>
         </Paper>

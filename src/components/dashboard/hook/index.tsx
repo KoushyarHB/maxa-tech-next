@@ -7,7 +7,7 @@ export const useGetAllProductsToDashboard = () => {
   return useQuery<IProduct[]>({
     queryKey: ["products-Dashboard"],
     queryFn: getAllProductsToDashboard,
-    refetchInterval: 500,
+    // refetchInterval: 500,
   });
 };
 

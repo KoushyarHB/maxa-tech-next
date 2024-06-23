@@ -19,7 +19,11 @@ import { IProduct } from "@/components/home/hooks/types";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-function AddProducts() {
+interface AddProductsProps {
+  setIsModalOpen: (isOpen: boolean) => void;
+}
+
+function AddProducts({ setIsModalOpen }: AddProductsProps) {
   const [disabled, setDisabled] = useState(true);
   const { mutate } = usePostData();
 
@@ -31,11 +35,10 @@ function AddProducts() {
     formState: { errors },
   } = useForm<IProduct>();
 
-
   const onSubmit = (formData: IProduct) => {
     const data = {
       ...formData,
-      id: formData.id ? +formData.id : 0,
+      // id: formData.id ? +formData.id : 0,
       price: formData.price ? +formData.price : 0,
       customerRating: Math.round(Math.random() * 5 * 10) / 10,
       numReviews: Math.floor(Math.random() * 5000),
@@ -58,10 +61,13 @@ function AddProducts() {
 
     mutate(data, {
       onSuccess: (response: any) => {
-        if (response.message === "Product with the same ID or name already exists") {
+        if (
+          response.message === "Product with the same ID or name already exists"
+        ) {
           toast.warning(response.message);
         } else {
           toast.success("Product added successfully");
+          setIsModalOpen(false);
           reset();
         }
       },
@@ -95,7 +101,7 @@ function AddProducts() {
               gap: "10px",
             }}
           >
-            <TextField
+            {/* <TextField
               fullWidth
               id="outlined-basic-id"
               label="ID Product"
@@ -109,7 +115,7 @@ function AddProducts() {
               })}
               error={!!errors.id}
               helperText={errors.id?.message}
-            />
+            /> */}
             <TextField
               fullWidth
               id="outlined-basic-name"

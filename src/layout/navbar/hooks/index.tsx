@@ -42,7 +42,7 @@ export const useSignInUser = () => {
   });
 };
 
-export const useGetCartItems = (userId) => {
+export const useGetCartItems = (userId:number) => {
   return useQuery({
     queryKey: ["cartItems", userId],
     queryFn: () => getCartItems(userId),

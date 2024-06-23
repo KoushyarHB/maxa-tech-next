@@ -60,7 +60,7 @@ export const getUserInfo = async () => {
   return response.data;
 };
 
-export const getCartItems = async (userId) => {
+export const getCartItems = async (userId:number) => {
   // const userId = fetchIdCookie();
   const response = await axios.get(`${BASE_URL}/cart/${userId}`);
   // queryClient.invalidateQueries({ queryKey: ["cartItems"] });
