@@ -37,11 +37,11 @@ function EditProducts({ product, setIsModalOpen }: EditProductsProps) {
         { id: product.id, product: data },
         {
           onSuccess: () => {
-            toast.success("Product updated successfully");
+            toast.success("Product updated successfully.");
             setIsModalOpen(false);
           },
           onError: () => {
-            toast.error("Failed to update product");
+            toast.error("Failed to update product.");
           },
         }
       );

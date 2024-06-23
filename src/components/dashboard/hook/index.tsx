@@ -1,12 +1,12 @@
 // hooks/useGetAllProductsToDashboard.ts
 import { IProduct } from "@/components/home/hooks/types";
-import { editData, getAllProductsToDashboard, postData } from "../services";
+import { editData, getAllDashboardProducts, postData } from "../services";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-export const useGetAllProductsToDashboard = () => {
+export const useGetAllDashboardProducts = () => {
   return useQuery<IProduct[]>({
     queryKey: ["products-Dashboard"],
-    queryFn: getAllProductsToDashboard,
+    queryFn: getAllDashboardProducts,
   });
 };
 
@@ -20,12 +20,7 @@ export const usePostData = () => {
 export const useEditData = () => {
   return useMutation({
     mutationKey: ["edit-data"],
-    mutationFn: ({
-      id,
-      product,
-    }: {
-      id?: number | undefined;
-      product: IProduct;
-    }) => editData(id, product),
+    mutationFn: ({ id, product }: { id: number; product: IProduct }) =>
+      editData(id, product),
   });
 };

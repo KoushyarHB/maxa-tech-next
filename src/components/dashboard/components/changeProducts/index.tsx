@@ -15,15 +15,15 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import EditProducts from "../modalEdit"; // Adjust the import based on your file structure
-import { useGetAllProductsToDashboard } from "@/components/dashboard/hook/index";
+import EditProducts from "../editModal"; // Adjust the import based on your file structure
+import { useGetAllDashboardProducts } from "@/components/dashboard/hook/index";
 import { IProduct } from "@/components/home/hooks/types";
 import Swal from "sweetalert2";
 import { BASE_URL } from "@/constants/urls";
 import axios from "axios";
 
-export default function ChangeProducts() {
-  const { data, isLoading, error } = useGetAllProductsToDashboard();
+const ChangeProducts: React.FC = () => {
+  const { data, isLoading, error } = useGetAllDashboardProducts();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
@@ -46,7 +46,6 @@ export default function ChangeProducts() {
   };
 
   async function handleDelete(id: number) {
-    console.log(id);
     const result = await Swal.fire({
       title: "Sure you want to delete this item?",
       text: "This action is irreversible.",
@@ -62,13 +61,13 @@ export default function ChangeProducts() {
         await axios.delete(`${BASE_URL}/products/${id}`);
         Swal.fire({
           title: "Deleted",
-          text: "Item was deleted successfuly.",
+          text: "Item was deleted successfully.",
           icon: "success",
         });
       } catch (error) {
         Swal.fire({
           title: "Error",
-          text: "Someething went wrong.",
+          text: "Something went wrong.",
           icon: "error",
         });
       }
@@ -154,7 +153,7 @@ export default function ChangeProducts() {
                     <IconButton onClick={() => handleEdit(row)}>
                       <EditIcon />
                     </IconButton>
-                    <IconButton onClick={() => handleDelete(row.id)}>
+                    <IconButton onClick={() => handleDelete(row.id!)}>
                       <DeleteIcon />
                     </IconButton>
                   </TableCell>
@@ -193,4 +192,6 @@ export default function ChangeProducts() {
       </Modal>
     </Paper>
   );
-}
+};
+
+export default ChangeProducts;

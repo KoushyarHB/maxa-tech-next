@@ -2,10 +2,9 @@ import * as React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import TableProducts from "./tableProducts";
-import AddProducts from "./addProducts";
-import ChangeProducts from "./changeProducts";
 import { Box, Breadcrumbs, Link, Stack } from "@mui/material";
+import ProductsTable from "./productsTable";
+import QuantityPriceTab from "./quantityPriceTab";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -42,6 +41,7 @@ export default function BasicTabs() {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
   const breadcrumbs = [
     <Link
       sx={{ fontSize: "18px" }}
@@ -62,8 +62,9 @@ export default function BasicTabs() {
       Dashboard
     </Link>,
   ];
+
   return (
-    <Box sx={{ width: "100%", height: "62vh", mb: "150px" }}>
+    <Box sx={{ width: "100%", height: "62vh", mb: "170px" }}>
       <Stack sx={{ mb: "48px" }} spacing={2} p={2}>
         <Breadcrumbs
           separator={
@@ -81,18 +82,14 @@ export default function BasicTabs() {
           aria-label="basic tabs example"
         >
           <Tab label="Products" {...a11yProps(0)} />
-          <Tab label="add" {...a11yProps(1)} />
-          <Tab label="delete/edit" {...a11yProps(2)} />
+          <Tab label="Quantity/Price" {...a11yProps(1)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <TableProducts />
+        <ProductsTable />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <AddProducts />
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={2}>
-        <ChangeProducts />
+        <QuantityPriceTab />
       </CustomTabPanel>
     </Box>
   );

@@ -2,21 +2,33 @@ import { IProduct } from "@/components/home/hooks/types";
 import { BASE_URL } from "@/constants/urls";
 import axios from "axios";
 
-export async function getAllProductsToDashboard() {
+export async function getAllDashboardProducts() {
   try {
     const { data } = await axios.get(`${BASE_URL}/products`);
     return data;
   } catch (error) {
-    console.log(error);
+    console.error("Error fetching products:", error);
   }
 }
 
 export async function postData(bodyRequest: IProduct) {
   try {
-    const { data } = await axios.post(`${BASE_URL}/products`, bodyRequest);
-    return data;
+    const get = await axios.get(`${BASE_URL}/products`);
+    const exists = get.data.some(
+      (item: { id: number; name: string }) =>
+        item.id === bodyRequest.id ||
+        item.name.trim() === bodyRequest.name.trim()
+    );
+
+    if (!exists) {
+      const { data } = await axios.post(`${BASE_URL}/products`, bodyRequest);
+      return data;
+    } else {
+      return { message: "Product with the same ID or name already exists" };
+    }
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    return { error: "An error occurred" };
   }
 }
 
