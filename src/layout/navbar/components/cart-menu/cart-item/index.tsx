@@ -23,7 +23,6 @@ export default function CartItem({ cartItemProps }: Props) {
   const { data: cartItemDetails } = useGetCartItemDetails(
     cartItemProps.productId
   );
-  console.log(cartItemDetails);
 
   return (
     <Box
