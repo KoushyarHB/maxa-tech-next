@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import BreadCrumbs from "../../shared/bread-crumbs";
-import { Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import AccountSideBar from "./account-side-bar";
 import AccountBody from "./account-body";
+import { useGetUserInfo } from "../hooks";
 
 export default function Account() {
+  const { data } = useGetUserInfo();
   const [tab, setTab] = useState("Personal Data");
   return (
     <>
@@ -16,8 +18,10 @@ export default function Account() {
         ]}
       />
       <Stack direction={"row"}>
-        <AccountSideBar tab={tab} setTab={setTab} />
-        <AccountBody tab={tab} />
+        <AccountSideBar userName={data?.userName} tab={tab} setTab={setTab} />
+        <Box sx={{ flexGrow: 1 }}>
+          <AccountBody data={data} tab={tab} />
+        </Box>
       </Stack>
     </>
   );
