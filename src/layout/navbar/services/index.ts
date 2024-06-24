@@ -56,8 +56,10 @@ export const signInUser = async (data: IUserSignInForm) => {
 
 export const getUserInfo = async () => {
   const userId = fetchIdCookie();
-  const response = await axios.get(`${BASE_URL}/users/${userId}`);
-  return response.data;
+  const userRole = fetchRoleCookie();
+  const userInfoResponse = await axios.get(`${BASE_URL}/users/${userId}`);
+  const userInfo = userInfoResponse.data;
+  return { userInfo: userInfo, userRole: userRole };
 };
 
 export const getCartItems = async (userId: number) => {

@@ -3,7 +3,7 @@ import { getUserInfo, getUserWishlistItems } from "../services";
 
 export const useGetUserInfo = () => {
   return useQuery({
-    queryKey: ["user-info"],
+    queryKey: ["aacount-user-info"],
     queryFn: () => getUserInfo(),
   });
 };

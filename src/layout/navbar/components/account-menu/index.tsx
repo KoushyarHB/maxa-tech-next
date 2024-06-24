@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Box,
   IconButton,
   ListItemIcon,
@@ -17,15 +16,23 @@ import heart from "@/assets/images/account-menu-icons/heart.png";
 import dollarCircle from "@/assets/images/account-menu-icons/dollar-circle.png";
 import logout from "@/assets/images/account-menu-icons/logout.png";
 import user from "@/assets/images/navbar-icons/user.png";
+import dashboard from "@/assets/images/dashboard.svg";
 import { useGetUserInfo } from "../../hooks";
 import {
   removeAccessCookie,
   removeIdCookie,
   removeRoleCookie,
 } from "../../services";
+import Link from "next/link";
+import useTabStore from "@/stores/useTabStore";
+import { useRouter } from "next/router";
 
 export default function AccountMenu() {
-  const { data: userInfo } = useGetUserInfo();
+  const { setTab } = useTabStore();
+  const { data } = useGetUserInfo();
+  const userInfo = data?.userInfo;
+  const userRole = data?.userRole;
+  const router = useRouter();
   const [anchorElAccount, setAnchorElAccount] =
     React.useState<null | HTMLElement>(null);
 
@@ -42,6 +49,14 @@ export default function AccountMenu() {
     removeIdCookie();
     removeRoleCookie();
     handleCloseAccountMenu();
+  };
+
+  const handleRedirect = (str: string) => {
+    if (userRole !== "admin") {
+      setTab(str);
+      router.push("/account");
+      handleCloseAccountMenu();
+    }
   };
 
   return (
@@ -81,7 +96,12 @@ export default function AccountMenu() {
         open={Boolean(anchorElAccount)}
         onClose={handleCloseAccountMenu}
       >
-        <MenuItem sx={{ minWidth: "288px", pb: 0 }}>
+        <MenuItem
+          onClick={() => {
+            handleRedirect("Personal Data");
+          }}
+          sx={{ minWidth: "288px", pb: 0 }}
+        >
           <ListItemIcon>
             <Box component="img" src={profileCircle.src} />
           </ListItemIcon>
@@ -92,7 +112,12 @@ export default function AccountMenu() {
             <Typography>{userInfo?.userName}</Typography>
           </Box>
         </MenuItem>
-        <MenuItem sx={{ pt: 0 }}>
+        <MenuItem
+          onClick={() => {
+            handleRedirect("Personal Data");
+          }}
+          sx={{ pt: 0 }}
+        >
           <ListItemIcon sx={{ visibility: "hidden" }}>
             <Box
               sx={{ height: "1px" }}
@@ -107,39 +132,65 @@ export default function AccountMenu() {
             {userInfo?.email}
           </Box>
         </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <Box component="img" src={bag.src} />
-          </ListItemIcon>
-          <Box
-            textAlign="left"
-            sx={{ color: "black", fontSize: "18px", fontWeight: "light" }}
-          >
-            Orders
-          </Box>
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <Box component="img" src={heart.src} />
-          </ListItemIcon>
-          <Box
-            textAlign="left"
-            sx={{ color: "black", fontSize: "18px", fontWeight: "light" }}
-          >
-            Wish List
-          </Box>
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <Box component="img" src={dollarCircle.src} />
-          </ListItemIcon>
-          <Box
-            textAlign="left"
-            sx={{ color: "black", fontSize: "18px", fontWeight: "light" }}
-          >
-            Payments
-          </Box>
-        </MenuItem>
+        {userRole !== "admin" ? (
+          <>
+            <MenuItem
+              onClick={() => {
+                handleRedirect("Orders");
+              }}
+            >
+              <ListItemIcon>
+                <Box component="img" src={bag.src} />
+              </ListItemIcon>
+              <Box
+                textAlign="left"
+                sx={{ color: "black", fontSize: "18px", fontWeight: "light" }}
+              >
+                Orders
+              </Box>
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleRedirect("Wishlist");
+              }}
+            >
+              <ListItemIcon>
+                <Box component="img" src={heart.src} />
+              </ListItemIcon>
+              <Box
+                textAlign="left"
+                sx={{ color: "black", fontSize: "18px", fontWeight: "light" }}
+              >
+                Wish List
+              </Box>
+            </MenuItem>
+            <MenuItem>
+              <ListItemIcon>
+                <Box component="img" src={dollarCircle.src} />
+              </ListItemIcon>
+              <Box
+                textAlign="left"
+                sx={{ color: "black", fontSize: "18px", fontWeight: "light" }}
+              >
+                Payments
+              </Box>
+            </MenuItem>
+          </>
+        ) : (
+          <Link href={"/dashboard"}>
+            <MenuItem>
+              <ListItemIcon>
+                <Box component="img" src={dashboard.src} />
+              </ListItemIcon>
+              <Box
+                textAlign="left"
+                sx={{ color: "black", fontSize: "18px", fontWeight: "light" }}
+              >
+                Dashboard
+              </Box>
+            </MenuItem>
+          </Link>
+        )}
         <MenuItem onClick={handleLogOut}>
           <ListItemIcon>
             <Box component="img" src={logout.src} />
