@@ -8,236 +8,88 @@
       "role": "admin"
     },
     {
-      "id": 1,
+      "id": 1719177066028,
       "userName": "koushyar",
       "email": "koushyar@gmail.com",
       "password": "123456",
+      "address": "",
+      "postalCode": "",
+      "phoneNumber": "",
       "role": "normal"
     },
     {
-      "id": 1718584028561,
+      "id": 1719177267669,
       "userName": "soroush",
       "email": "soroush@gmail.com",
       "password": "123456",
+      "address": "",
+      "postalCode": "",
+      "phoneNumber": "",
       "role": "normal"
     },
     {
-      "id": 1718639445783,
-      "userName": "mammadreza",
-      "email": "mammadreza@gmail.com",
-      "password": "123456",
-      "role": "normal"
-    },
-    {
-      "id": 1718641285326,
-      "userName": "zahra",
-      "email": "zahra@gmail.com",
-      "password": "123456",
-      "role": "normal"
-    },
-    {
-      "id": 1718641333293,
+      "id": 1719177485337,
       "userName": "zohre",
       "email": "zohre@gmail.com",
       "password": "123456",
-      "role": "normal"
-    },
-    {
-      "id": 1718726856860,
-      "userName": "Mr. Hoseini",
-      "email": "hoseini@gmail.com",
-      "password": "123456",
+      "address": "",
+      "postalCode": "",
+      "phoneNumber": "",
       "role": "normal"
     }
   ],
   "cart": [
     {
-      "id": 1,
+      "id": 1719177066028,
       "cartProducts": [
-        {
-          "productId": 1,
-          "quantity": 3,
-          "color": ""
-        }
-      ]
-    },
-    {
-      "id": 1718584028561,
-      "cartProducts": [
-        {
-          "productId": 83,
-          "quantity": 1,
-          "color": ""
-        },
-        {
-          "productId": 48,
-          "quantity": 1,
-          "color": ""
-        },
-        {
-          "productId": 49,
-          "quantity": 2,
-          "color": ""
-        },
-        {
-          "productId": 41,
-          "quantity": 4,
-          "color": ""
-        },
-        {
-          "productId": 76,
-          "quantity": 1,
-          "color": ""
-        },
-        {
-          "productId": 73,
-          "quantity": 1,
-          "color": ""
-        },
-        {
-          "productId": 72,
-          "quantity": 1,
-          "color": ""
-        },
         {
           "productId": 71,
           "quantity": 1,
           "color": ""
         },
         {
-          "productId": 9,
-          "quantity": 3,
-          "color": ""
-        },
-        {
-          "productId": 4,
-          "quantity": 1,
-          "color": ""
-        },
-        {
-          "productId": 6,
-          "quantity": 1,
-          "color": ""
-        },
-        {
-          "productId": 5,
-          "quantity": 2,
-          "color": ""
-        },
-        {
-          "productId": 1,
-          "quantity": 2,
-          "color": ""
-        }
-      ]
-    },
-    {
-      "id": 1718639445783,
-      "cartProducts": [
-        {
-          "productId": 2,
-          "quantity": 1,
-          "color": ""
-        },
-        {
-          "productId": 76,
-          "quantity": 1,
-          "color": ""
-        },
-        {
-          "productId": 73,
-          "quantity": 1,
-          "color": ""
-        },
-        {
-          "productId": 72,
-          "quantity": 1,
-          "color": ""
-        }
-      ]
-    },
-    {
-      "id": 1718641285326,
-      "cartProducts": [
-        {
-          "productId": 3,
+          "productId": 21,
           "quantity": 1,
           "color": ""
         },
         {
           "productId": 2,
-          "quantity": 2,
-          "color": ""
-        }
-      ]
-    },
-    {
-      "id": 1718641333293,
-      "cartProducts": [
-        {
-          "productId": 2,
-          "quantity": 2,
-          "color": ""
-        }
-      ]
-    },
-    {
-      "id": 1718649651917,
-      "cartProducts": [
-        {
-          "productId": 42,
-          "quantity": 2,
-          "color": ""
-        }
-      ]
-    },
-    {
-      "id": 1718726856860,
-      "cartProducts": [
-        {
-          "productId": 33,
           "quantity": 1,
           "color": ""
-        },
+        }
+      ]
+    },
+    {
+      "id": 1719177267669,
+      "cartProducts": [
         {
-          "productId": 22,
-          "quantity": 2,
+          "productId": 10,
+          "quantity": 1,
           "color": ""
         }
       ]
+    },
+    {
+      "id": 1719177485337,
+      "cartProducts": []
     }
   ],
   "wishlist": [
     {
-      "userId": "1",
-      "wishlistProducts": {
-        "productId": "1",
-        "quantity": 3,
-        "color": ""
-      }
-    },
-    {
-      "id": 1718584028561,
+      "id": 1719177066028,
       "wishlistProducts": []
     },
     {
-      "id": 1718639445783,
-      "wishlistProducts": []
+      "id": 1719177267669,
+      "wishlistProducts": [
+        49,
+        22,
+        44,
+        1
+      ]
     },
     {
-      "id": 1718641285326,
-      "wishlistProducts": []
-    },
-    {
-      "id": 1718641333293,
-      "wishlistProducts": []
-    },
-    {
-      "id": 1718649651917,
-      "wishlistProducts": []
-    },
-    {
-      "id": 1718726856860,
+      "id": 1719177485337,
       "wishlistProducts": []
     }
   ],
