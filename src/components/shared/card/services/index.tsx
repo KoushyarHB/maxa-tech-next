@@ -33,3 +33,51 @@ export const addToCart = async (productId: number) => {
     throw error;
   }
 };
+
+export const addToWishlist = async (productId: number) => {
+  const userId = fetchIdCookie();
+
+  try {
+    const wishlistResponse = await axios.get(`${BASE_URL}/wishlist/${userId}`);
+    const userWishlist = wishlistResponse.data;
+
+    const existingItemIndex = userWishlist.wishlistProducts.findIndex(
+      (id: number) => id === productId
+    );
+
+    if (existingItemIndex !== -1) {
+      userWishlist.wishlistProducts.splice(existingItemIndex, 1);
+    } else {
+      userWishlist.wishlistProducts.unshift(productId);
+    }
+
+    const updateResponse = await axios.put(
+      `${BASE_URL}/wishlist/${userId}`,
+      userWishlist
+    );
+    queryClient.invalidateQueries({ queryKey: ["wishlistItems"] });
+    return updateResponse.data;
+  } catch (error) {
+    console.error("Error adding to wishlist:", error);
+    throw error;
+  }
+};
+
+export const isInWishlist = async (productId: number) => {
+  const userId = fetchIdCookie();
+  try {
+    const wishlistResponse = await axios.get(`${BASE_URL}/wishlist/${userId}`);
+    const userWishlist = wishlistResponse.data;
+    const existingItemIndex = userWishlist.wishlistProducts.findIndex(
+      (id: number) => id === productId
+    );
+    if (existingItemIndex !== -1) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error("Error querying wishlist:", error);
+    throw error;
+  }
+};

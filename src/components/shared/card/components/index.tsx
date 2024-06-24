@@ -3,10 +3,13 @@ import { Box, Button, CardMedia, Divider, Typography } from "@mui/material";
 import React from "react";
 // import CollorPallet from "./color-pallet";
 import heart from "@/assets/images/heart.svg";
+import heartFill from "@/assets/images/heart-fill.svg";
 import { IProduct } from "@/components/home/hooks/types";
 import Link from "next/link";
 import shoppingCard from "@/assets/images/shopping-cart.svg";
-import { addToCart } from "../services";
+import { addToCart, addToWishlist } from "../services";
+import { useIsInWishlist } from "../hooks";
+import { queryClient } from "@/pages/_app";
 
 type Hover = {
   hoverMode: "landingHover" | "productHover";
@@ -18,15 +21,20 @@ type CardProps = {
 };
 
 export default function Card({ cardProps, hoverMode }: CardProps) {
+  const { data: isInWishlist, invalidate } = useIsInWishlist(cardProps.id);
+
   const handleAddToCartClick = (event: React.MouseEvent) => {
     event.stopPropagation();
     event.preventDefault();
     addToCart(cardProps.id);
   };
 
-  const handleAddToWishList = (event: React.MouseEvent) => {
+  const handleAddToWishList = async (event: React.MouseEvent) => {
     event.stopPropagation();
     event.preventDefault();
+    await addToWishlist(cardProps.id);
+    invalidate();
+    queryClient.invalidateQueries({ queryKey: ["user-wishlist"] });
   };
 
   return (
@@ -74,7 +82,7 @@ export default function Card({ cardProps, hoverMode }: CardProps) {
               <Box
                 onClick={handleAddToWishList}
                 component="img"
-                src={heart.src}
+                src={isInWishlist ? heartFill.src : heart.src}
                 className="child4"
                 sx={{
                   position: "absolute",
@@ -243,7 +251,8 @@ export default function Card({ cardProps, hoverMode }: CardProps) {
               <Box
                 onClick={handleAddToWishList}
                 component="img"
-                src={heart.src}
+                // src={heart.src}
+                src={isInWishlist ? heartFill.src : heart.src}
                 className="heartIcon"
                 sx={{
                   position: "absolute",
