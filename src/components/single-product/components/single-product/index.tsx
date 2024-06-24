@@ -13,13 +13,20 @@ import { IProduct } from "@/components/home/hooks/types";
 
 import frameDelivery from "@/assets/images/single-product-assets/frameDelivery.svg";
 import heart from "@/assets/images/single-product-assets/heart.svg";
+import heartFill from "@/assets/images/heart-fill.svg";
 import notification from "@/assets/images/single-product-assets/notification.svg";
 import directboxSend from "@/assets/images/single-product-assets/directbox-send.svg";
 import star from "@/assets/images/single-product-assets/Star.svg";
+import { useIsInWishlist } from "@/components/shared/card/hooks";
+import { addToWishlist } from "@/components/shared/card/services";
 
 export default function SingleProduct({ product }: { product: IProduct }) {
+  const { data: isInWishlist, invalidate } = useIsInWishlist(product?.id);
+  const handleAddToWishList = async () => {
+    await addToWishlist(product.id);
+    invalidate();
+  };
   const [selectedColor, setSelectedColor] = React.useState("neutral");
-
   const handleColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedColor(event.target.value);
   };
@@ -50,7 +57,11 @@ export default function SingleProduct({ product }: { product: IProduct }) {
             gap={"12px"}
             flexDirection={"column"}
           >
-            <Box component={"img"} src={heart.src} />
+            <Box
+              onClick={handleAddToWishList}
+              component={"img"}
+              src={isInWishlist ? heartFill.src : heart.src}
+            />
             <Box component={"img"} src={notification.src} />
             <Box component={"img"} src={directboxSend.src} />
           </Box>
