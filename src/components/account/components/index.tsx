@@ -1,13 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BreadCrumbs from "../../shared/bread-crumbs";
 import { Box, Stack } from "@mui/material";
 import AccountSideBar from "./account-side-bar";
 import AccountBody from "./account-body";
 import { useGetUserInfo } from "../hooks";
+import useTabStore from "@/stores/useTabStore";
+import { useRouter } from "next/router";
 
 export default function Account() {
-  const { data } = useGetUserInfo();
-  const [tab, setTab] = useState("Personal Data");
+  const { tab } = useTabStore();
+  const { refetch } = useGetUserInfo();
+  const router = useRouter();
+
+  useEffect(() => {
+    const handleRouteChange = (url: string) => {
+      if (url === "/account") {
+        refetch();
+      }
+    };
+    router.events.on("routeChangeComplete", handleRouteChange);
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, [router, refetch]);
+
   return (
     <>
       <BreadCrumbs
@@ -18,9 +34,9 @@ export default function Account() {
         ]}
       />
       <Stack direction={"row"}>
-        <AccountSideBar userName={data?.userName} tab={tab} setTab={setTab} />
+        <AccountSideBar />
         <Box sx={{ flexGrow: 1 }}>
-          <AccountBody data={data} tab={tab} />
+          <AccountBody />
         </Box>
       </Stack>
     </>

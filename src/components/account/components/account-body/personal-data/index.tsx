@@ -7,14 +7,11 @@ import password from "@/assets/images/personal-data-icons/password.svg";
 import address from "@/assets/images/personal-data-icons/address.svg";
 import postalcode from "@/assets/images/personal-data-icons/postalcode.svg";
 import PersonalDataField from "./personal-data-field";
-import { IUser } from "@/layout/navbar/hooks/types";
 import TabTitle from "../../tab-title";
+import { useGetUserInfo } from "@/components/account/hooks";
 
-type PersonalDataProps = {
-  data: IUser;
-};
-
-export default function PersonalData({ data }: PersonalDataProps) {
+export default function PersonalData() {
+  const { data } = useGetUserInfo();
   return (
     <Box>
       <TabTitle

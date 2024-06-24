@@ -2,21 +2,17 @@ import { Box } from "@mui/material";
 import PersonalData from "./personal-data";
 import Orders from "./orders";
 import Wishlist from "./wishlist";
-import { IUser } from "@/layout/navbar/hooks/types";
 import Discounts from "./discounts";
 import SecurityAndAccess from "./security-and-access";
 import Notifications from "./notifications";
+import useTabStore from "@/stores/useTabStore";
 
-type AccountBodyProps = {
-  data: IUser;
-  tab: string;
-};
-
-export default function AccountBody({ data, tab }: AccountBodyProps) {
+export default function AccountBody() {
+  const { tab } = useTabStore();
   return (
     <>
       <Box sx={{ pt: "24px", pl: "24px" }}>
-        {tab === "Personal Data" && <PersonalData data={data} />}
+        {tab === "Personal Data" && <PersonalData />}
         {tab === "Orders" && <Orders />}
         {tab === "Wishlist" && <Wishlist />}
         {tab === "Discounts" && <Discounts />}

@@ -1,18 +1,13 @@
 import { accountSidebar } from "@/constants/accountSidebar";
 import { Box, Stack } from "@mui/material";
 import profileIcon from "@/assets/images/account-sidebar-icons/Frame 26086857.svg";
+import useTabStore from "@/stores/useTabStore";
+import { useGetUserInfo } from "../../hooks";
 
-type AccountSideBarProps = {
-  userName?: string;
-  tab: string;
-  setTab: React.Dispatch<React.SetStateAction<string>>;
-};
+export default function AccountSideBar() {
+  const { data } = useGetUserInfo();
+  const { tab, setTab } = useTabStore();
 
-export default function AccountSideBar({
-  userName,
-  tab,
-  setTab,
-}: AccountSideBarProps) {
   const handleTabChange = (str: string) => {
     setTab(str);
   };
@@ -31,7 +26,9 @@ export default function AccountSideBar({
       <Box sx={{ px: "8px", py: "2px", mb: "10px" }}>
         <Stack direction={"row"} alignItems={"center"}>
           <Box component="img" sx={{ mr: "16px" }} src={profileIcon.src} />
-          <Box sx={{ fontSize: "20px", fontWeight: "600" }}>{userName}</Box>
+          <Box sx={{ fontSize: "20px", fontWeight: "600" }}>
+            {data?.userName}
+          </Box>
         </Stack>
       </Box>
       <Stack direction={"column"}>
