@@ -67,7 +67,6 @@ export default function Navbar() {
                   sx={{ height: "63px", width: "56px", marginRight: 2 }}
                 />
               </Link>
-
               <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
                 <IconButton
                   size="large"
@@ -146,11 +145,6 @@ export default function Navbar() {
                 sx={{ flexGrow: 0 }}
               >
                 <SearchPopup />
-                {/* {hasAccess ? (
-                  <CartMenu />
-                ) : (
-                  <Box>Please sign in to see your cart!</Box>
-                )} */}
                 <CartMenu />
                 {hasAccess ? <AccountMenu /> : <Login />}
               </Stack>

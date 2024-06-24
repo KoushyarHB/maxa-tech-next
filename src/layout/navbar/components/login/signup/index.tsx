@@ -43,6 +43,9 @@ export default function SignUp({ setIsSignIn, onClose }: Props) {
       userName: formData.name,
       email: formData.email,
       password: formData.password,
+      address: "",
+      postalCode: "",
+      phoneNumber: "",
       role: "normal",
     };
     const cartData = {

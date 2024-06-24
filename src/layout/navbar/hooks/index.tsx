@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   fetchAccessCookie,
   getCartItemDetails,
@@ -22,7 +22,6 @@ export const useGetUserInfo = () => {
   return useQuery({
     queryKey: ["user-info"],
     queryFn: () => getUserInfo(),
-    refetchOnWindowFocus: false,
   });
 };
 
@@ -42,11 +41,10 @@ export const useSignInUser = () => {
   });
 };
 
-export const useGetCartItems = (userId) => {
+export const useGetCartItems = (userId: number) => {
   return useQuery({
     queryKey: ["cartItems", userId],
     queryFn: () => getCartItems(userId),
-    refetchOnWindowFocus: false,
   });
 };
 
@@ -54,6 +52,5 @@ export const useGetCartItemDetails = (productId: number) => {
   return useQuery({
     queryKey: ["cartItemDetails", productId],
     queryFn: () => getCartItemDetails(productId),
-    refetchOnWindowFocus: false,
   });
 };
