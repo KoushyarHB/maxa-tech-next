@@ -63,6 +63,26 @@
       "id": 1719177267669,
       "cartProducts": [
         {
+          "productId": 4,
+          "quantity": 1,
+          "color": ""
+        },
+        {
+          "productId": 2,
+          "quantity": 1,
+          "color": ""
+        },
+        {
+          "productId": 1,
+          "quantity": 2,
+          "color": ""
+        },
+        {
+          "productId": 22,
+          "quantity": 1,
+          "color": ""
+        },
+        {
           "productId": 10,
           "quantity": 1,
           "color": ""
@@ -77,15 +97,19 @@
   "wishlist": [
     {
       "id": 1719177066028,
-      "wishlistProducts": []
+      "wishlistProducts": [
+        26,
+        1,
+        22
+      ]
     },
     {
       "id": 1719177267669,
       "wishlistProducts": [
+        87,
         49,
         22,
-        44,
-        1
+        44
       ]
     },
     {
