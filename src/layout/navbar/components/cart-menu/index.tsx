@@ -5,9 +5,11 @@ import { useAccessCookie, useGetCartItems } from "../../hooks";
 import CartItem from "./cart-item";
 import { ICartProducts } from "../../hooks/types";
 import { fetchIdCookie } from "../../services";
+import { useRouter } from "next/router";
 
 export default function CartMenu() {
   const { data: hasAccess } = useAccessCookie();
+  const router = useRouter();
   const userId = fetchIdCookie();
   const { data: cartItems } = useGetCartItems(userId);
   const [anchorElCart, setAnchorElCart] = React.useState<null | HTMLElement>(
@@ -19,8 +21,10 @@ export default function CartMenu() {
   const handleCloseCartMenu = () => {
     setAnchorElCart(null);
   };
-
-  console.log(cartItems);
+  const handleProceedToCart = () => {
+    router.push("/cart");
+    handleCloseCartMenu();
+  };
 
   return (
     <Box>
@@ -115,6 +119,7 @@ export default function CartMenu() {
                     <Box>$557</Box>
                   </Stack>
                   <Button
+                    onClick={handleProceedToCart}
                     sx={{
                       height: "100%",
                       flexGrow: "1",
