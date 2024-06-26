@@ -77,29 +77,7 @@ const steps = ["Cart", "Checkout", "Payment"];
 export default function Cart() {
   const { data: randomProducts } = useGetProduct();
   const userId = fetchIdCookie();
-  const { data: cartItems } = useGetCartItems(userId);
-
-  const shipment = 22.5;
-  const [subtotal, setSubTotal] = useState(0);
-  const [discount, setDiscount] = useState(0);
-  const [grandTotal, setGrandTotal] = useState(0);
-
-  useEffect(() => {
-    let newSubtotal = 0;
-    let newDiscount = 0;
-    let newGrandTotal = 0;
-    cartItems?.map((item: any) => {
-      getCartItemDetails(item.productId).then((productDetail) => {
-        newDiscount +=
-          (productDetail.discount.percent * productDetail.price) / 100;
-        newSubtotal += productDetail.price;
-        setSubTotal(newSubtotal);
-        setDiscount(newDiscount);
-        newGrandTotal = newSubtotal - newDiscount + shipment;
-        setGrandTotal(newGrandTotal);
-      });
-    });
-  }, [cartItems]);
+  const { data: cartItems } = useGetCartItems(Number(userId));
 
   return (
     <Box>
@@ -146,12 +124,7 @@ export default function Cart() {
             ))}
           </Stack>
           <Stack>
-            <PaymentDetails
-              subtotal={subtotal}
-              discount={discount}
-              shipment={shipment}
-              grandTotal={grandTotal}
-            />
+            <PaymentDetails />
           </Stack>
         </Stack>
         <Stack direction={"column"}>

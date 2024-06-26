@@ -26,7 +26,6 @@ export const addToCart = async (productId: number) => {
       `${BASE_URL}/cart/${userId}`,
       userCart
     );
-    queryClient.invalidateQueries({ queryKey: ["cartItems"] });
     return updateResponse.data;
   } catch (error) {
     console.error("Error adding to cart:", error);

@@ -6,24 +6,22 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { paymentType } from "../../hooks/type";
+import { useCalculateTotal } from "@/layout/navbar/hooks";
 
-export default function PaymentDetails({
-  subtotal,
-  discount,
-  shipment,
-  grandTotal,
-}: paymentType) {
+export default function PaymentDetails() {
+  const { data: total } = useCalculateTotal();
+  const shipmentCost = 22.5;
+  const subtotal = total ? total[0] : 0;
+  const discount = total ? total[1] : 0;
+  const grandTotal = total ? total[2] : 0;
   return (
     <Card
       sx={{
         width: "416px",
-        height: "267px"
+        height: "267px",
       }}
     >
-      <CardContent
-        sx={{ display: "flex", flexDirection: "column" }}
-      >
+      <CardContent sx={{ display: "flex", flexDirection: "column" }}>
         <Typography fontSize={"24px"} fontWeight={"500"} mb={2.5}>
           Payment Details
         </Typography>
@@ -38,7 +36,7 @@ export default function PaymentDetails({
               Subtotal
             </Typography>
             <Typography fontSize={"14px"} fontWeight={"300"} color={"#444444"}>
-              ${subtotal.toFixed(2)}
+              ${subtotal}
             </Typography>
           </Stack>
           <Stack direction={"row"} justifyContent="space-between">
@@ -46,7 +44,7 @@ export default function PaymentDetails({
               Discount
             </Typography>
             <Typography fontSize={"14px"} fontWeight={"300"} color={"#444444"}>
-              ${discount.toFixed(2)}
+              - ${discount}
             </Typography>
           </Stack>
           <Stack direction={"row"} justifyContent="space-between">
@@ -54,7 +52,7 @@ export default function PaymentDetails({
               Shipment Cost
             </Typography>
             <Typography fontSize={"14px"} fontWeight={"300"} color={"#444444"}>
-              ${shipment.toFixed(2)}
+              $22.5
             </Typography>
           </Stack>
         </Stack>
@@ -65,7 +63,7 @@ export default function PaymentDetails({
             Grand Total
           </Typography>
           <Typography fontSize={"16px"} fontWeight={"500"}>
-            ${grandTotal.toFixed(2)}
+            ${grandTotal + shipmentCost}
           </Typography>
         </Stack>
         <Button

@@ -8,7 +8,7 @@ import { IProduct } from "@/components/home/hooks/types";
 import Link from "next/link";
 import shoppingCard from "@/assets/images/shopping-cart.svg";
 import { addToCart, addToWishlist } from "../services";
-import { useIsInWishlist } from "../hooks";
+import { useAddToCart, useIsInWishlist } from "../hooks";
 import { queryClient } from "@/pages/_app";
 
 type Hover = {
@@ -22,11 +22,12 @@ type CardProps = {
 
 export default function Card({ cardProps, hoverMode }: CardProps) {
   const { data: isInWishlist, invalidate } = useIsInWishlist(cardProps.id);
+  const addToCartMutation = useAddToCart();
 
   const handleAddToCartClick = (event: React.MouseEvent) => {
     event.stopPropagation();
     event.preventDefault();
-    addToCart(cardProps.id);
+    addToCartMutation.mutate(cardProps.id);
   };
 
   const handleAddToWishList = async (event: React.MouseEvent) => {

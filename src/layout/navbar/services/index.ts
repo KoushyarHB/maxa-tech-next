@@ -132,10 +132,6 @@ export const decreaseCartItemQuantity = async (
     const userId = fetchIdCookie();
     const cartResponse = await axios.get(`${BASE_URL}/cart/${userId}`);
     const cartData = cartResponse.data.cartProducts;
-    const productResponse = await axios.get(
-      `${BASE_URL}/products/${productId}`
-    );
-    const productAvailableQuantity = productResponse.data.availableQuantity;
     const updatedCartProducts = cartData.map((product: ICartProducts) => {
       if (product.productId === productId) {
         if (product.quantity > 1) {
@@ -148,6 +144,48 @@ export const decreaseCartItemQuantity = async (
       cartProducts: updatedCartProducts,
     });
     return updateResponse.data;
+  } catch (error) {
+    console.error("Error deleting cart item:", error);
+    throw error;
+  }
+};
+
+export const calculateTotal = async () => {
+  try {
+    const userId = fetchIdCookie();
+    const cartResponse = await axios.get(`${BASE_URL}/cart/${userId}`);
+    const cartData = cartResponse.data.cartProducts;
+
+    if (!cartData) {
+      throw new Error("Cart data is undefined");
+    }
+
+    const productDetailsPromises = cartData.map((product: ICartProducts) => {
+      return axios
+        .get(`${BASE_URL}/products/${product.productId}`)
+        .then((response) => ({
+          quantity: product.quantity,
+          price: response.data.price,
+          discountPercentage: response.data.discount.percent,
+        }));
+    });
+    const productDetails = await Promise.all(productDetailsPromises);
+    let totalPrice = 0;
+    let totalDiscount = 0;
+    let totalPayable = 0;
+    productDetails.map((item) => (totalPrice += item.price * item.quantity));
+    productDetails.map(
+      (item) =>
+        (totalDiscount +=
+          item.price * item.quantity * (item.discountPercentage / 100))
+    );
+    totalPayable = totalPrice - totalDiscount;
+    console.log(totalPayable.toFixed(2));
+    return [
+      +totalPrice.toFixed(2),
+      +totalDiscount.toFixed(2),
+      +totalPayable.toFixed(2),
+    ];
   } catch (error) {
     console.error("Error deleting cart item:", error);
     throw error;

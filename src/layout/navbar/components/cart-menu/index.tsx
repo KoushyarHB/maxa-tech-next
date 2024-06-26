@@ -1,7 +1,11 @@
 import { Box, Button, IconButton, Menu, Stack, Tooltip } from "@mui/material";
 import React from "react";
 import bag from "@/assets/images/navbar-icons/bag.png";
-import { useAccessCookie, useGetCartItems } from "../../hooks";
+import {
+  useAccessCookie,
+  useCalculateTotal,
+  useGetCartItems,
+} from "../../hooks";
 import CartItem from "./cart-item";
 import { ICartProducts } from "../../hooks/types";
 import { fetchIdCookie } from "../../services";
@@ -11,7 +15,9 @@ export default function CartMenu() {
   const { data: hasAccess } = useAccessCookie();
   const router = useRouter();
   const userId = fetchIdCookie();
-  const { data: cartItems } = useGetCartItems(userId);
+  const { data: cartItems } = useGetCartItems(Number(userId));
+  const { data: total } = useCalculateTotal();
+  const grandTotal = total ? total[2] : 0;
   const [anchorElCart, setAnchorElCart] = React.useState<null | HTMLElement>(
     null
   );
@@ -121,7 +127,7 @@ export default function CartMenu() {
                     <Box sx={{ fontSize: "14px", fontWeight: "300" }}>
                       Grand total
                     </Box>
-                    <Box>$557</Box>
+                    <Box>{grandTotal}</Box>
                   </Stack>
                   <Button
                     onClick={handleProceedToCart}

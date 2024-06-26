@@ -11,13 +11,14 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { IProduct } from "../../hooks/types";
-import { addToCart } from "@/components/shared/card/services";
+import { useAddToCart } from "@/components/shared/card/hooks";
 
 export default function PayInfoCard({ product }: { product: IProduct }) {
   const [selectedValue, setSelectedValue] = useState("");
+  const addToCartMutation = useAddToCart();
 
   const handleAddToCart = () => {
-    addToCart(product.id);
+    addToCartMutation.mutate(product.id);
   };
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {

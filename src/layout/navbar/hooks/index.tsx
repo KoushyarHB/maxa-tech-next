@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
+  calculateTotal,
   decreaseCartItemQuantity,
   fetchAccessCookie,
   getCartItemDetails,
@@ -63,7 +64,12 @@ export const useRemoveCartItem = () => {
   return useMutation<any, Error, number>({
     mutationFn: removeCartItem,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cartItems"] });
+      queryClient.invalidateQueries({
+        queryKey: ["cartItems"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["calculateTotal"],
+      });
     },
     onError: (error: Error) => {
       console.error("Error deleting cart item:", error);
@@ -76,6 +82,9 @@ export const useIncreaseCartItemQuantity = () => {
     mutationFn: increaseCartItemQuantity,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cartItems"] });
+      queryClient.invalidateQueries({
+        queryKey: ["calculateTotal"],
+      });
     },
     onError: (error: Error) => {
       console.error("Error deleting cart item:", error);
@@ -88,9 +97,20 @@ export const useDecreaseCartItemQuantity = () => {
     mutationFn: decreaseCartItemQuantity,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cartItems"] });
+      queryClient.invalidateQueries({
+        queryKey: ["calculateTotal"],
+      });
     },
     onError: (error: Error) => {
       console.error("Error deleting cart item:", error);
     },
+  });
+};
+
+export const useCalculateTotal = () => {
+  return useQuery({
+    queryKey: ["calculateTotal"],
+    queryFn: () => calculateTotal(),
+    staleTime: 0,
   });
 };
