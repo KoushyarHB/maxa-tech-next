@@ -1,6 +1,12 @@
 import { BASE_URL } from "@/constants/urls";
 import axios from "axios";
-import { ICart, IUser, IUserSignInForm, IWishlist } from "../hooks/types";
+import {
+  ICart,
+  ICartProducts,
+  IUser,
+  IUserSignInForm,
+  IWishlist,
+} from "../hooks/types";
 import { getCookie, setCookie, deleteCookie } from "cookies-next";
 
 export const signUpNewUser = async (
@@ -70,6 +76,82 @@ export const getCartItems = async (userId: number) => {
 export const getCartItemDetails = async (productId: number) => {
   const response = await axios.get(`${BASE_URL}/products/${productId}`);
   return response.data;
+};
+
+export const removeCartItem = async (productId: number): Promise<any> => {
+  try {
+    const userId = fetchIdCookie();
+    const cartResponse = await axios.get(`${BASE_URL}/cart/${userId}`);
+    const cartData = cartResponse.data.cartProducts;
+    const remainingCartProducts = cartData.filter(
+      (product: ICartProducts) => product.productId !== productId
+    );
+    const updateResponse = await axios.patch(`${BASE_URL}/cart/${userId}`, {
+      cartProducts: remainingCartProducts,
+    });
+    return updateResponse.data;
+  } catch (error) {
+    console.error("Error deleting cart item:", error);
+    throw error;
+  }
+};
+
+export const increaseCartItemQuantity = async (
+  productId: number
+): Promise<any> => {
+  try {
+    const userId = fetchIdCookie();
+    const cartResponse = await axios.get(`${BASE_URL}/cart/${userId}`);
+    const cartData = cartResponse.data.cartProducts;
+    const productResponse = await axios.get(
+      `${BASE_URL}/products/${productId}`
+    );
+    const productAvailableQuantity = productResponse.data.availableQuantity;
+    const updatedCartProducts = cartData.map((product: ICartProducts) => {
+      if (product.productId === productId) {
+        if (product.quantity < productAvailableQuantity) {
+          product.quantity++;
+        }
+      }
+      return product;
+    });
+    const updateResponse = await axios.patch(`${BASE_URL}/cart/${userId}`, {
+      cartProducts: updatedCartProducts,
+    });
+    return updateResponse.data;
+  } catch (error) {
+    console.error("Error deleting cart item:", error);
+    throw error;
+  }
+};
+
+export const decreaseCartItemQuantity = async (
+  productId: number
+): Promise<any> => {
+  try {
+    const userId = fetchIdCookie();
+    const cartResponse = await axios.get(`${BASE_URL}/cart/${userId}`);
+    const cartData = cartResponse.data.cartProducts;
+    const productResponse = await axios.get(
+      `${BASE_URL}/products/${productId}`
+    );
+    const productAvailableQuantity = productResponse.data.availableQuantity;
+    const updatedCartProducts = cartData.map((product: ICartProducts) => {
+      if (product.productId === productId) {
+        if (product.quantity > 1) {
+          product.quantity--;
+        }
+      }
+      return product;
+    });
+    const updateResponse = await axios.patch(`${BASE_URL}/cart/${userId}`, {
+      cartProducts: updatedCartProducts,
+    });
+    return updateResponse.data;
+  } catch (error) {
+    console.error("Error deleting cart item:", error);
+    throw error;
+  }
 };
 
 // Cookie functions

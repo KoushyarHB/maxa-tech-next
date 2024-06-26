@@ -5,7 +5,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useGetAllDashboardProducts = () => {
   return useQuery<IProduct[]>({
-    queryKey: ["products-Dashboard"],
+    queryKey: ["products-dashboard"],
     queryFn: getAllDashboardProducts,
   });
 };

@@ -4,7 +4,12 @@ import AddIcon from "@mui/icons-material/Add";
 import Guaranteed from "@/assets/images/cart-item-icons/guaranteed.svg";
 import freeDelivery from "@/assets/images/cart-item-icons/free delivery.svg";
 import { ICartProducts } from "@/layout/navbar/hooks/types";
-import { useGetCartItemDetails } from "@/layout/navbar/hooks";
+import {
+  useDecreaseCartItemQuantity,
+  useGetCartItemDetails,
+  useIncreaseCartItemQuantity,
+  useRemoveCartItem,
+} from "@/layout/navbar/hooks";
 import trashBtn from "@/assets/images/trashbtn.svg";
 import Image from "next/image";
 
@@ -17,6 +22,23 @@ const CartItemDetails = ({ cartItemProps, changeComponent }: Props) => {
   const { data: cartItemDetails } = useGetCartItemDetails(
     cartItemProps.productId
   );
+
+  const removeMutation = useRemoveCartItem();
+  const increaseMutation = useIncreaseCartItemQuantity();
+  const decreaseMutation = useDecreaseCartItemQuantity();
+
+  const handleRemoveCartProduct = (id: number) => {
+    removeMutation.mutate(id);
+  };
+
+  const handleIncreaseQuantity = (id: number) => {
+    increaseMutation.mutate(id);
+  };
+
+  const handleDecreaseQuantity = (id: number) => {
+    decreaseMutation.mutate(id);
+  };
+
   const boxStyles = {
     menu: {
       width: "232px",
@@ -76,7 +98,12 @@ const CartItemDetails = ({ cartItemProps, changeComponent }: Props) => {
             gap={1}
             justifyContent="center"
           >
-            <Box component="img" src={trashBtn.src} alt="Remove" />
+            <Box
+              onClick={() => handleRemoveCartProduct(cartItemProps.productId)}
+              component="img"
+              src={trashBtn.src}
+              alt="Remove"
+            />
             <Stack
               direction="row"
               alignItems="center"
@@ -86,6 +113,7 @@ const CartItemDetails = ({ cartItemProps, changeComponent }: Props) => {
               height="24px"
             >
               <Button
+                onClick={() => handleDecreaseQuantity(cartItemProps.productId)}
                 size="small"
                 sx={{ color: "#717171", minHeight: 16, minWidth: 16 }}
               >
@@ -100,6 +128,7 @@ const CartItemDetails = ({ cartItemProps, changeComponent }: Props) => {
                 {String(cartItemProps.quantity)}
               </Typography>
               <Button
+                onClick={() => handleIncreaseQuantity(cartItemProps.productId)}
                 size="small"
                 sx={{ color: "#717171", minHeight: 16, minWidth: 16 }}
               >
@@ -112,6 +141,7 @@ const CartItemDetails = ({ cartItemProps, changeComponent }: Props) => {
     </Box>
   );
 };
+
 const CartItem = ({ cartItemProps, changeComponent }: Props) => {
   const { data: cartItemDetails } = useGetCartItemDetails(
     cartItemProps.productId

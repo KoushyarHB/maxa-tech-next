@@ -63,27 +63,17 @@
       "id": 1719177267669,
       "cartProducts": [
         {
+          "productId": 2,
+          "quantity": 3,
+          "color": ""
+        },
+        {
           "productId": 4,
           "quantity": 1,
           "color": ""
         },
         {
-          "productId": 2,
-          "quantity": 1,
-          "color": ""
-        },
-        {
           "productId": 1,
-          "quantity": 2,
-          "color": ""
-        },
-        {
-          "productId": 22,
-          "quantity": 1,
-          "color": ""
-        },
-        {
-          "productId": 10,
           "quantity": 1,
           "color": ""
         }
@@ -108,6 +98,8 @@
       "wishlistProducts": [
         87,
         49,
+        16,
+        26,
         22,
         44
       ]
@@ -120,7 +112,7 @@
   "products": [
     {
       "id": 1,
-      "name": "Dell XPS 14 Laptop",
+      "name": "Dell XPS 14 Laptopppp",
       "upc": "884116366808",
       "shortDescription": "Powerful laptop with Intel Core i7 processor and 16GB RAM.",
       "longDescription": "The Dell XPS 13 laptop is perfect for work, school, or entertainment. It features a fast Intel Core i7 processor, 16GB of RAM, and a spacious 512GB SSD.",
@@ -3033,7 +3025,7 @@
     },
     {
       "id": 112,
-      "name": "erfqerf",
+      "name": "darivari",
       "categoryName": "qerfqref",
       "brandName": "qerfqref",
       "price": 333,
@@ -3041,7 +3033,9 @@
       "shortDescription": "fqrfqrf",
       "thumbnailImage": "refqrfqqrfq",
       "discount": {
-        "percent": ""
+        "percent": "",
+        "startDate": "",
+        "endDate": ""
       },
       "dimensions": {
         "width": "11",

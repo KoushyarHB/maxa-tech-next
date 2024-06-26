@@ -136,7 +136,7 @@ export default function Cart() {
       </Box>
       <Stack direction={"column"}>
         <Stack direction={"row"} justifyContent={"space-between"}>
-          <Stack direction={"column"} mb={6}>
+          <Stack direction={"column"} spacing={2} mb={6}>
             {cartItems?.map((item: any) => (
               <CartItem
                 key={item.productId}
@@ -158,7 +158,14 @@ export default function Cart() {
           <Typography fontSize={"20px"} fontWeight={"500"}>
             Customers who viewed items in your browsing history also viewed
           </Typography>
-          <Box sx={{ display: "flex", flexDirection: "row" }} marginY={6}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+            marginY={6}
+          >
             {randomProducts?.map((item) => (
               <Card
                 key={item.productId}

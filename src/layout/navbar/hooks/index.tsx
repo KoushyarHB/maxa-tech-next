@@ -1,13 +1,17 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
+  decreaseCartItemQuantity,
   fetchAccessCookie,
   getCartItemDetails,
   getCartItems,
   getUserInfo,
+  increaseCartItemQuantity,
+  removeCartItem,
   signInUser,
   signUpNewUser,
 } from "../services";
 import { ICart, IUser, IWishlist } from "./types";
+import { queryClient } from "@/pages/_app";
 
 export const useAccessCookie = () => {
   return useQuery({
@@ -52,5 +56,41 @@ export const useGetCartItemDetails = (productId: number) => {
   return useQuery({
     queryKey: ["cartItemDetails", productId],
     queryFn: () => getCartItemDetails(productId),
+  });
+};
+
+export const useRemoveCartItem = () => {
+  return useMutation<any, Error, number>({
+    mutationFn: removeCartItem,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cartItems"] });
+    },
+    onError: (error: Error) => {
+      console.error("Error deleting cart item:", error);
+    },
+  });
+};
+
+export const useIncreaseCartItemQuantity = () => {
+  return useMutation<any, Error, number>({
+    mutationFn: increaseCartItemQuantity,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cartItems"] });
+    },
+    onError: (error: Error) => {
+      console.error("Error deleting cart item:", error);
+    },
+  });
+};
+
+export const useDecreaseCartItemQuantity = () => {
+  return useMutation<any, Error, number>({
+    mutationFn: decreaseCartItemQuantity,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cartItems"] });
+    },
+    onError: (error: Error) => {
+      console.error("Error deleting cart item:", error);
+    },
   });
 };

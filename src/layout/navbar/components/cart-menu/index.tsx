@@ -94,7 +94,7 @@ export default function CartMenu() {
                       borderRadius: "10px",
                     },
                     "&::-webkit-scrollbar-thumb": {
-                      backgroundColor: "#888",
+                      backgroundColor: "#ccc",
                       borderRadius: "10px",
                     },
                     "&::-webkit-scrollbar-thumb:hover": {
@@ -111,7 +111,12 @@ export default function CartMenu() {
                       <CartItem key={item.productId} cartItemProps={item} />
                     ))}
                 </Stack>
-                <Stack height={"48px"} direction={"row"} alignItems={"center"}>
+                <Stack
+                  sx={{ my: "10px" }}
+                  height={"48px"}
+                  direction={"row"}
+                  alignItems={"center"}
+                >
                   <Stack direction={"column"} sx={{ mr: "32px" }}>
                     <Box sx={{ fontSize: "14px", fontWeight: "300" }}>
                       Grand total
