@@ -38,7 +38,7 @@ function AddProducts({ setIsModalOpen }: AddProductsProps) {
   const onSubmit = (formData: IProduct) => {
     const data = {
       ...formData,
-      // id: formData.id ? +formData.id : 0,
+      id: formData.id ? +formData.id : 0,
       price: formData.price ? +formData.price : 0,
       customerRating: Math.round(Math.random() * 5 * 10) / 10,
       numReviews: Math.floor(Math.random() * 5000),
@@ -101,7 +101,7 @@ function AddProducts({ setIsModalOpen }: AddProductsProps) {
               gap: "10px",
             }}
           >
-            {/* <TextField
+            <TextField
               fullWidth
               id="outlined-basic-id"
               label="ID Product"
@@ -115,7 +115,7 @@ function AddProducts({ setIsModalOpen }: AddProductsProps) {
               })}
               error={!!errors.id}
               helperText={errors.id?.message}
-            /> */}
+            />
             <TextField
               fullWidth
               id="outlined-basic-name"

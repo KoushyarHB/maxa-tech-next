@@ -3,10 +3,9 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import TableProducts from "./tableProducts";
-import AddProducts from "./addProducts";
-import ChangeProducts from "./changeProducts";
 import { Box, Breadcrumbs, Link, Stack } from "@mui/material";
-import QuantityTab from "./quantity";
+import QuantityPriceTab from "@/components/dashboard/components/quantityPriceTab/index";
+import StackBars from "./chart";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -82,15 +81,19 @@ export default function BasicTabs() {
           aria-label="basic tabs example"
         >
           <Tab label="Products" {...a11yProps(0)} />
-          <Tab label="quantity" {...a11yProps(1)} />
+          <Tab label="quantity/price" {...a11yProps(1)} />
+          {/* <Tab label="chart" {...a11yProps(2)} /> */}
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
         <TableProducts />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <QuantityTab />
+        <QuantityPriceTab />
       </CustomTabPanel>
+      {/* <CustomTabPanel value={value} index={2}>
+        <StackBars />
+      </CustomTabPanel> */}
     </Box>
   );
 }

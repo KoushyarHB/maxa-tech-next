@@ -157,7 +157,7 @@ export default function TableProducts() {
                       </TableCell>
                       <TableCell align="left">{row.name}</TableCell>
                       <TableCell align="center">
-                        ${row.price.toFixed(2)}
+                        ${row.price?.toFixed(2)}
                       </TableCell>
                       <TableCell align="center">{row.categoryName}</TableCell>
                       <TableCell align="center">{row.brandName}</TableCell>
@@ -182,6 +182,7 @@ export default function TableProducts() {
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
+            sx={{mt:"10px"}}
           />
           <Modal open={isModalEditOpen} onClose={handleCloseModalEdit}>
             <Box

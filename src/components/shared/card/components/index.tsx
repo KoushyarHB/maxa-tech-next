@@ -169,7 +169,7 @@ export default function Card({ cardProps, hoverMode }: CardProps) {
                       {(
                         cardProps.price *
                         (1 - cardProps.discount.percent / 100)
-                      ).toFixed(2)}
+                      )?.toFixed(2)}
                     </Box>
                   ) : (
                     <Box fontSize={"18px"}>${cardProps.price}</Box>
@@ -333,7 +333,7 @@ export default function Card({ cardProps, hoverMode }: CardProps) {
                       {(
                         cardProps.price *
                         (1 - cardProps.discount.percent / 100)
-                      ).toFixed(2)}
+                      )?.toFixed(2)}
                     </Box>
                   ) : (
                     <Box fontSize={"18px"}>${cardProps.price}</Box>

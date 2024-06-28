@@ -93,7 +93,8 @@ export default function CartItem({ cartItemProps }: Props) {
                 fontWeight={"400"}
                 color={"#2D2D2D"}
               >
-                ${(cartItemDetails?.price * cartItemProps?.quantity).toFixed(2)}
+                $
+                {(cartItemDetails?.price * cartItemProps?.quantity)?.toFixed(2)}
               </Typography>
             </Box>
             <Box display={"flex"} alignItems={"center"} gap={2}>

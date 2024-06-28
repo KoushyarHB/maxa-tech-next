@@ -3152,62 +3152,6 @@
       "seller": "Random Seller",
       "sellerId": "random123",
       "largeImage": "https://example.com/random-large-image.jpg"
-    },
-    {
-      "id": 11111,
-      "name": "Dell XPS 14 Laptop",
-      "categoryName": "May Alston",
-      "brandName": "Marsden Clay",
-      "price": 670,
-      "longDescription": "Atque explicabo Cum",
-      "shortDescription": "Qui provident facer",
-      "thumbnailImage": "Est culpa dolorem c",
-      "discount": {
-        "percent": ""
-      },
-      "dimensions": {
-        "width": "12",
-        "height": "12",
-        "depth": "12"
-      },
-      "customerRating": 2.8,
-      "numReviews": 659,
-      "upc": "wa6wx",
-      "currency": "USD",
-      "availableOnline": true,
-      "availableInStore": true,
-      "seller": "Random Seller",
-      "sellerId": "random123",
-      "largeImage": "https://example.com/random-large-image.jpg"
-    },
-    {
-      "id": 111,
-      "name": "Dell XPS  Laptop22",
-      "categoryName": "Silas Mccormick",
-      "brandName": "Rylee Osborn",
-      "price": 725,
-      "longDescription": "Sunt iusto illum eo",
-      "shortDescription": "Sunt aut voluptatibu",
-      "thumbnailImage": "Et velit nisi unde c",
-      "discount": {
-        "percent": 0,
-        "startDate": null,
-        "endDate": null
-      },
-      "dimensions": {
-        "width": "11",
-        "height": "11",
-        "depth": "11"
-      },
-      "customerRating": 2,
-      "numReviews": 4635,
-      "upc": "pzp4l",
-      "currency": "USD",
-      "availableOnline": true,
-      "availableInStore": true,
-      "seller": "Random Seller",
-      "sellerId": "random123",
-      "largeImage": "https://example.com/random-large-image.jpg"
     }
   ]
 }

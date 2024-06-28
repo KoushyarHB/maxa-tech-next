@@ -40,8 +40,51 @@ export async function editData(id: number, product: IProduct) {
     queryClient.invalidateQueries({ queryKey: ["products-Dashboard"] });
     return res.data;
   } catch (error) {
-    console.error("Failed to update product:", error);
-    throw error;
+    console.log("Failed to update product:", error);
+    console.log(error);
+  }
+}
+
+// export async function editQuantityPrice(id: number, product: IProduct) {
+//   try {
+//     const res = await axios.put(`${BASE_URL}/products/${id}`, product);
+//     queryClient.invalidateQueries({ queryKey: ["products-Dashboard"] });
+//     return res.data;
+//   } catch (error) {
+//     console.log("Failed to update product:", error);
+//   }
+// }
+
+// export async function editQuantityPrices(
+//   products: { id: number; product: IProduct }[]
+// ) {
+//   try {
+//     const updatePromises = products.map(({ id, product }) =>
+//       axios.put(`${BASE_URL}/products/${id}`, product)
+//     );
+//     const res = await Promise.all(updatePromises);
+//     queryClient.invalidateQueries({ queryKey: ["products-Dashboard"] });
+//     return res.map((response) => response.data);
+//   } catch (error) {
+//     console.error("Failed to update products:", error);
+//     throw error;
+//   }
+// }
+
+export async function updatePrices({
+  dataToBeUpdated,
+}: {
+  dataToBeUpdated: [string, string][];
+}) {
+  console.log(dataToBeUpdated);
+  try {
+    const updatePromises = dataToBeUpdated.map((item) =>
+      axios.patch(`${BASE_URL}/products/${item[0]}`, { price: +item[1] })
+    );
+    const res = await Promise.all(updatePromises);
+    // return res.data;
+  } catch (error) {
+    console.error(error);
   }
 }
 
