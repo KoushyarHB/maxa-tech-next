@@ -22,6 +22,7 @@ import {
   setRoleCookie,
 } from "@/layout/navbar/services";
 import { useSignUpNewUser } from "@/layout/navbar/hooks";
+import { toast } from "react-toastify";
 
 type Props = {
   setIsSignIn: React.Dispatch<React.SetStateAction<boolean>>;
@@ -64,9 +65,11 @@ export default function SignUp({ setIsSignIn, onClose }: Props) {
           setAccessCookie(true);
           setRoleCookie(userData.role);
           onClose();
+          toast.success(`Hi ${userData.userName}, welcome`);
         },
         onError: (error) => {
           console.error("Sign-up failed:", error.message);
+          toast.error("Sign-up failed");
         },
       }
     );

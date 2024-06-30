@@ -19,6 +19,7 @@ import {
   setRoleCookie,
 } from "@/layout/navbar/services";
 import { useSignInUser } from "@/layout/navbar/hooks";
+import { toast } from "react-toastify";
 
 type Props = {
   setIsSignIn: React.Dispatch<React.SetStateAction<boolean>>;
@@ -40,9 +41,11 @@ export default function SignIn({ setIsSignIn, onClose }: Props) {
         setAccessCookie(true);
         setRoleCookie(response.role);
         onClose();
+        toast.success(`Hi ${response.userName}, welcome to MAXA Tech`);
       },
       onError: (error) => {
         console.error("Sign-up failed:", error.message);
+        toast.error("The username or password is incorrect");
       },
     });
   };

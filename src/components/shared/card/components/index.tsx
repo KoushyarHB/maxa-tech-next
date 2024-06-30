@@ -10,6 +10,7 @@ import shoppingCard from "@/assets/images/shopping-cart.svg";
 import { addToCart, addToWishlist } from "../services";
 import { useIsInWishlist } from "../hooks";
 import { queryClient } from "@/pages/_app";
+import { toast } from "react-toastify";
 
 type Hover = {
   hoverMode: "landingHover" | "productHover";
@@ -27,6 +28,7 @@ export default function Card({ cardProps, hoverMode }: CardProps) {
     event.stopPropagation();
     event.preventDefault();
     addToCart(cardProps.id);
+    toast.success("Added to the cart");
   };
 
   const handleAddToWishList = async (event: React.MouseEvent) => {
@@ -35,6 +37,7 @@ export default function Card({ cardProps, hoverMode }: CardProps) {
     await addToWishlist(cardProps.id);
     invalidate();
     queryClient.invalidateQueries({ queryKey: ["user-wishlist"] });
+    // toast.success("Added to the wishlist");
   };
 
   return (

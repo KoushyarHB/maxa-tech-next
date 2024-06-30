@@ -8,6 +8,7 @@ import {
   IWishlist,
 } from "../hooks/types";
 import { getCookie, setCookie, deleteCookie } from "cookies-next";
+import { toast } from "react-toastify";
 
 export const signUpNewUser = async (
   newUserData: IUser,
@@ -89,6 +90,7 @@ export const removeCartItem = async (productId: number): Promise<any> => {
     const updateResponse = await axios.patch(`${BASE_URL}/cart/${userId}`, {
       cartProducts: remainingCartProducts,
     });
+    toast.info("Removed Product in Cart");
     return updateResponse.data;
   } catch (error) {
     console.error("Error deleting cart item:", error);

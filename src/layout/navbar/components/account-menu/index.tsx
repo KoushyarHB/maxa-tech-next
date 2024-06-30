@@ -26,6 +26,7 @@ import {
 import Link from "next/link";
 import useTabStore from "@/stores/useTabStore";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 export default function AccountMenu() {
   const { setTab } = useTabStore();
@@ -49,6 +50,7 @@ export default function AccountMenu() {
     removeIdCookie();
     removeRoleCookie();
     handleCloseAccountMenu();
+    toast.info("Logged out successfully");
   };
 
   const handleRedirect = (str: string) => {

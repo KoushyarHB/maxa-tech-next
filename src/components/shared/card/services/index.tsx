@@ -3,6 +3,7 @@ import { ICartProducts } from "@/layout/navbar/hooks/types";
 import { fetchIdCookie } from "@/layout/navbar/services";
 import { queryClient } from "@/pages/_app";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export const addToCart = async (productId: number) => {
   const userId = fetchIdCookie();
@@ -47,8 +48,10 @@ export const addToWishlist = async (productId: number) => {
 
     if (existingItemIndex !== -1) {
       userWishlist.wishlistProducts.splice(existingItemIndex, 1);
+      toast.info("Removed in the wishlist");
     } else {
       userWishlist.wishlistProducts.unshift(productId);
+      toast.success("Added to the wishlist");
     }
 
     const updateResponse = await axios.put(
