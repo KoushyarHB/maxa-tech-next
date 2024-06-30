@@ -1,62 +1,26 @@
+import BreadCrumbs from "@/components/shared/bread-crumbs";
+import CallOutlinedIcon from "@mui/icons-material/CallOutlined";
+import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
+import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import {
   Box,
-  Breadcrumbs,
   Button,
   Card,
   CardContent,
-  Divider,
   Grid,
-  Stack,
   TextField,
   Typography,
 } from "@mui/material";
-import Link from "next/link";
-import Router from "next/router";
-import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
-import CallOutlinedIcon from "@mui/icons-material/CallOutlined";
-import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
-
-function handleClick(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
-  event.preventDefault();
-  Router.push("/");
-}
 
 export default function ContactUs() {
-  const breadcrumbs = [
-    <Link
-      key="1"
-      color="inherit"
-      href="/"
-      onClick={handleClick}
-      className="text-lg font-light text-[#717171]"
-    >
-      Home
-    </Link>,
-    <Box key="2">
-      <Typography
-        key="2"
-        color="primary"
-        fontSize="1.125rem"
-        fontWeight="lighter"
-      >
-        Contact Us
-      </Typography>
-      <Divider className="bg-blue-300" />
-    </Box>,
-  ];
   return (
-    <Box marginBottom={6} marginTop={3}>
-      <Stack spacing={2}>
-        <Breadcrumbs
-          separator={
-            <NavigateNextIcon fontSize="large" sx={{ color: "#717171" }} />
-          }
-          aria-label="breadcrumb"
-        >
-          {breadcrumbs}
-        </Breadcrumbs>
-      </Stack>
+    <Box marginBottom={18}>
+      <BreadCrumbs
+        array={[
+          ["Home", "/"],
+          ["Contact Us", "/about-us"],
+        ]}
+      />
       <Box
         width="794px"
         display="flex"

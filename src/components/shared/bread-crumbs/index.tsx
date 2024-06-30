@@ -3,7 +3,7 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import React from "react";
 
 type BreadCrumbsProps = {
-  array: [string, string][];
+  array: string[][];
 };
 
 export default function BreadCrumbs({ array }: BreadCrumbsProps) {

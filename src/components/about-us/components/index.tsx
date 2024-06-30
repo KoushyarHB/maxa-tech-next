@@ -13,6 +13,7 @@ import {
   aboutUsCategories,
   teamMembers,
 } from "@/constants/aboutUs";
+import BreadCrumbs from "@/components/shared/bread-crumbs";
 
 function handleClick(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
   event.preventDefault();
@@ -20,37 +21,14 @@ function handleClick(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
 }
 
 function AboutUs() {
-  const breadcrumbs = [
-    <Link
-      underline="hover"
-      key="1"
-      color="inherit"
-      href="/"
-      onClick={handleClick}
-    >
-      Home
-    </Link>,
-    <Link
-      underline="hover"
-      key="2"
-      color="text.primary"
-      href="/about-us"
-      onClick={handleClick}
-    >
-      About Us
-    </Link>,
-  ];
-
   return (
     <Box>
-      <Stack spacing={2} p={2}>
-        <Breadcrumbs
-          separator={<NavigateNextIcon fontSize="small" />}
-          aria-label="breadcrumb"
-        >
-          {breadcrumbs}
-        </Breadcrumbs>
-      </Stack>
+      <BreadCrumbs
+        array={[
+          ["Home", "/"],
+          ["About Us", "/about-us"],
+        ]}
+      />
       <Box
         sx={{
           display: "flex",

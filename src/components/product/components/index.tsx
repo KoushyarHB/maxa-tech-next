@@ -1,36 +1,63 @@
-import { Box, Breadcrumbs, Link } from "@mui/material";
-import React, { useState } from "react";
-import Sidebar from "./sidebar";
-import Stack from "@mui/material/Stack";
-import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import CategoryFilterButton from "./category-filter-button";
-import ProductCards from "./products";
+import BreadCrumbs from "@/components/shared/bread-crumbs";
+import { Box, Typography } from "@mui/material";
+import { StaticImageData } from "next/dist/shared/lib/get-img-props";
+import { useEffect, useState } from "react";
 import { useGetAllProducts } from "../hooks";
+import CategoryFilterButton, { categoryArray } from "./category-filter-button";
+import ProductCards from "./products";
+import Sidebar from "./sidebar";
 import SortProduct from "./sort-products";
 
-function Products() {
-  const [category, setCategory] = useState("");
+type ProductPropsType = {
+  productCategory?: string;
+};
+
+function Products({ productCategory }: ProductPropsType) {
+  const [category, setCategory] = useState(productCategory);
   const { data, isLoading } = useGetAllProducts(category);
-  const breadcrumbs = [
-    <Link
-      sx={{ fontSize: "18px" }}
-      underline="hover"
-      key="1"
-      color="inherit"
-      href="/"
-    >
-      Home
-    </Link>,
-    <Link
-      sx={{ fontSize: "18px" }}
-      underline="hover"
-      key="2"
-      color="text.primary"
-      href="/products"
-    >
-      Products
-    </Link>,
+
+  const baseBreadCrumbsArray = [
+    ["Home", "/"],
+    ["Products", "/products"],
   ];
+  const breadCrumbsArray = productCategory
+    ? [
+        ...baseBreadCrumbsArray,
+        [
+          productCategory,
+          `/products/${
+            categoryArray.find((item) => item.name === productCategory)
+              ?.routeName
+          }`,
+        ],
+      ]
+    : baseBreadCrumbsArray;
+
+  const [headImageSrc, setHeadImageSrc] = useState<
+    StaticImageData | undefined
+  >();
+
+  useEffect(() => {
+    if (productCategory === "Smart Phone") {
+      setHeadImageSrc(categoryArray.at(0)?.image);
+    }
+    if (productCategory === "Camera") {
+      setHeadImageSrc(categoryArray.at(1)?.image);
+    }
+    if (productCategory === "Laptop") {
+      setHeadImageSrc(categoryArray.at(2)?.image);
+    }
+    if (productCategory === "Smart Watch") {
+      setHeadImageSrc(categoryArray.at(3)?.image);
+    }
+    if (productCategory === "Gaming") {
+      setHeadImageSrc(categoryArray.at(4)?.image);
+    }
+    if (productCategory === "Accessories") {
+      setHeadImageSrc(categoryArray.at(5)?.image);
+    }
+  }, [productCategory]);
+
   return (
     <Box
       sx={{
@@ -38,16 +65,7 @@ function Products() {
         flexDirection: "column",
       }}
     >
-      <Stack sx={{ mb: "48px" }} spacing={2} p={2}>
-        <Breadcrumbs
-          separator={
-            <NavigateNextIcon fontSize="large" sx={{ color: "#717171" }} />
-          }
-          aria-label="breadcrumb"
-        >
-          {breadcrumbs}
-        </Breadcrumbs>
-      </Stack>
+      <BreadCrumbs array={breadCrumbsArray} />
       <Box
         sx={{
           display: "flex",
@@ -56,7 +74,33 @@ function Products() {
           width: "100%",
         }}
       >
-        <CategoryFilterButton setCategory={setCategory} />
+        {productCategory ? (
+          <Box
+            display={"flex"}
+            alignItems={"center"}
+            width={"100%"}
+            height={300}
+            mb={"48px"}
+          >
+            <Box
+              sx={{
+                backgroundImage: `url(${headImageSrc?.src})`,
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center top",
+                backgroundSize: "cover",
+                width: "100%",
+                height: "300px",
+                borderRadius: "24px",
+              }}
+            >
+              <Typography p={10} fontWeight={"700"} fontSize={"70px"}>
+                {productCategory}
+              </Typography>
+            </Box>
+          </Box>
+        ) : (
+          <CategoryFilterButton setCategory={setCategory} />
+        )}
       </Box>
       <Box
         sx={{
