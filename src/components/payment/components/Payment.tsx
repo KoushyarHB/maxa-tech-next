@@ -2,91 +2,11 @@ import UserOrder from "@/components/checkout/components/user-order/UserOrder";
 import { useGetCartItems } from "@/layout/navbar/hooks";
 import { fetchIdCookie, getCartItemDetails } from "@/layout/navbar/services";
 import useTabStore from "@/stores/useTabStore";
-import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
-import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
-import PaymentOutlinedIcon from "@mui/icons-material/PaymentOutlined";
-import {
-  Box,
-  Stack,
-  Step,
-  StepLabel,
-  Stepper,
-  Typography,
-} from "@mui/material";
-import StepConnector, {
-  stepConnectorClasses,
-} from "@mui/material/StepConnector";
-import { StepIconProps } from "@mui/material/StepIcon";
-import { styled } from "@mui/material/styles";
+import { Box, Stack } from "@mui/material";
 import { useEffect } from "react";
 import PaymentInfo from "./payment-info/PaymentInfo";
-const ColorlibConnector = styled(StepConnector)(() => ({
-  [`&.${stepConnectorClasses.alternativeLabel}`]: {
-    top: 22,
-  },
-  [`&.${stepConnectorClasses.active}`]: {
-    [`& .${stepConnectorClasses.line}`]: {
-      backgroundColor: "#0C68F4",
-    },
-  },
-  [`&.${stepConnectorClasses.completed}`]: {
-    [`& .${stepConnectorClasses.line}`]: {
-      backgroundColor: "#0C68F4",
-    },
-  },
-  [`& .${stepConnectorClasses.line}`]: {
-    height: 3,
-    border: 0,
-    backgroundColor: "#0C68F4",
-    borderRadius: 1,
-  },
-}));
+import StepperComponent from "@/components/shared/stepper";
 
-const ColorlibStepIconRoot = styled("div")<{
-  ownerState: { completed?: boolean; active?: boolean };
-}>(({ theme, ownerState }) => ({
-  backgroundColor:
-    theme.palette.mode === "dark" ? theme.palette.grey[700] : "#ccc",
-  zIndex: 1,
-  color: "#fff",
-  width: 48,
-  height: 48,
-  display: "flex",
-  borderRadius: "50%",
-  justifyContent: "center",
-  alignItems: "center",
-  ...(ownerState.active && {
-    backgroundColor: "white",
-    boxShadow: "0 4px 10px 0 rgba(0,0,0,.25)",
-    width: 72,
-    height: 72,
-    border: "3px solid #0C68F4",
-    transform: "translateY(-15%)",
-  }),
-  ...(ownerState.completed && {
-    backgroundColor: "#78ABF9",
-  }),
-}));
-
-function ColorlibStepIcon(props: StepIconProps) {
-  const { active, completed, className } = props;
-
-  const icons: { [index: string]: React.ReactElement } = {
-    1: <LocalMallOutlinedIcon sx={{ fontSize: "32px" }} />,
-    2: <LocalShippingOutlinedIcon sx={{ fontSize: "32px" }} />,
-    3: <PaymentOutlinedIcon sx={{ fontSize: "48px", color: "#0C68F4" }} />,
-  };
-
-  return (
-    <ColorlibStepIconRoot
-      ownerState={{ completed, active }}
-      className={className}
-    >
-      {icons[String(props.icon)]}
-    </ColorlibStepIconRoot>
-  );
-}
-const steps = ["Cart", "Checkout", "Payment"];
 export default function Payment() {
   const userId = fetchIdCookie();
   const { data: cartItems } = useGetCartItems(Number(userId));
@@ -118,30 +38,7 @@ export default function Payment() {
         justifyContent="center"
         alignItems="center"
       >
-        <Stack sx={{ width: "50%" }} spacing={4}>
-          <Stepper
-            alternativeLabel
-            activeStep={2}
-            connector={<ColorlibConnector />}
-          >
-            {steps.map((label) => (
-              <Step key={label}>
-                <StepLabel StepIconComponent={ColorlibStepIcon}>
-                  <Typography
-                    sx={{
-                      color: "#0C68F4",
-                      fontSize: label === "Payment" ? "16px" : "14px",
-                      fontWeight: label === "Payment" ? "500" : "400",
-                      mt: label === "Payment" ? -2 : -1,
-                    }}
-                  >
-                    {label}
-                  </Typography>
-                </StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-        </Stack>
+        <StepperComponent activeStepNumber={2} />
       </Box>
       <Stack direction={"row"} justifyContent={"space-between"} mb={6}>
         <PaymentInfo />
