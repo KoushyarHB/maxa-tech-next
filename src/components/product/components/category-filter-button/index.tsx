@@ -1,50 +1,68 @@
-import { Box, CardMedia, Typography } from "@mui/material";
-import React, { useState } from "react";
 import accessories from "@/assets/images/categories-icons/Accessories.svg";
 import camera from "@/assets/images/categories-icons/camera.svg";
-import laptop from "@/assets/images/categories-icons/monitor.svg";
-import smartPhone from "@/assets/images/categories-icons/mobile.svg";
 import gaming from "@/assets/images/categories-icons/game.svg";
+import smartPhone from "@/assets/images/categories-icons/mobile.svg";
+import laptop from "@/assets/images/categories-icons/monitor.svg";
 import smartWatch from "@/assets/images/categories-icons/watch-status.svg";
+import accessories2 from "@/assets/images/category-page-images/acc.png";
+import camera2 from "@/assets/images/category-page-images/camera.png";
+import gaming2 from "@/assets/images/category-page-images/gaming.png";
+import laptop2 from "@/assets/images/category-page-images/laptop.png";
+import smartPhone2 from "@/assets/images/category-page-images/smartphone.png";
+import smartWatch2 from "@/assets/images/category-page-images/smartwatch.png";
+import { Box, CardMedia, Typography } from "@mui/material";
+import React, { useState } from "react";
 
-const category = [
+export const categoryArray = [
   {
     id: 1,
     src: smartPhone,
     name: "Smart Phone",
+    image: smartPhone2,
+    routeName: "smart-phone",
   },
   {
     id: 2,
     src: camera,
     name: "Camera",
+    image: camera2,
+    routeName: "camera",
   },
 
   {
     id: 3,
     src: laptop,
     name: "Laptop",
+    image: laptop2,
+    routeName: "laptop",
   },
   {
     id: 4,
     src: smartWatch,
     name: "Smart Watch",
+    image: smartWatch2,
+    routeName: "smart-watch",
   },
   {
     id: 5,
     src: gaming,
     name: "Gaming",
+    image: gaming2,
+    routeName: "gaming",
   },
   {
     id: 6,
     src: accessories,
     name: "Accessories",
+    image: accessories2,
+    routeName: "accessories",
   },
 ];
 
 function CategoryFilterButton({
-  setCategory,
+  setCategory = () => {},
 }: {
-  setCategory: React.Dispatch<React.SetStateAction<string>>;
+  setCategory?: React.Dispatch<React.SetStateAction<string | undefined>>;
 }) {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
@@ -55,9 +73,8 @@ function CategoryFilterButton({
 
   return (
     <Box sx={{ display: "flex", flexWrap: "wrap", gap: "32px", mb: "48px" }}>
-      {category.map((item) => (
+      {categoryArray.map((item) => (
         <Box
-          // onClick={() => setCategory(item.name)}
           onClick={() => handleCategoryClick(item.name)}
           key={item.id}
           sx={{
