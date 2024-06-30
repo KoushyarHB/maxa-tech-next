@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import BreadCrumbs from "../../shared/bread-crumbs";
-import { Box, Stack } from "@mui/material";
-import AccountSideBar from "./account-side-bar";
-import AccountBody from "./account-body";
-import { useGetUserInfo } from "../hooks";
 import useTabStore from "@/stores/useTabStore";
+import { Box, Stack } from "@mui/material";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
+import BreadCrumbs from "../../shared/bread-crumbs";
+import { useGetUserInfo } from "../hooks";
+import AccountBody from "./account-body";
+import AccountSideBar from "./account-side-bar";
 
 export default function Account() {
   const { tab } = useTabStore();
