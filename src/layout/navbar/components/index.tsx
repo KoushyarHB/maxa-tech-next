@@ -21,8 +21,8 @@ import { useAccessCookie } from "../hooks";
 const pages = [
   ["Home", "/"],
   ["Products", "/products"],
-  ["Blog", "/blog"],
-  ["FAQ", "/FAQ"],
+  ["Blog", "/about-us"],
+  ["FAQ", "/faq"],
   ["About Us", "/about-us"],
 ];
 
