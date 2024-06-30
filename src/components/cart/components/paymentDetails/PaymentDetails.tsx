@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useCalculateTotal } from "@/layout/navbar/hooks";
+import Link from "next/link";
 
 export default function PaymentDetails() {
   const { data: total } = useCalculateTotal();
@@ -66,12 +67,21 @@ export default function PaymentDetails() {
             ${grandTotal + shipmentCost}
           </Typography>
         </Stack>
-        <Button
-          variant="contained"
-          sx={{ mt: "25px", py: "10px", fontSize: "16px", fontWeight: "400" }}
-        >
-          Procced to checkout
-        </Button>
+        <Link href="/checkout">
+          <Button
+            variant="contained"
+            sx={{
+              width: "100%",
+              mt: "25px",
+              py: "10px",
+              fontSize: "16px",
+              fontWeight: "400",
+              textTransform: "none",
+            }}
+          >
+            Procced to Checkout
+          </Button>
+        </Link>
       </CardContent>
     </Card>
   );
