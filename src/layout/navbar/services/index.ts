@@ -3,6 +3,7 @@ import axios from "axios";
 import {
   ICart,
   ICartProducts,
+  IOrder,
   IUser,
   IUserSignInForm,
   IWishlist,
@@ -12,7 +13,8 @@ import { getCookie, setCookie, deleteCookie } from "cookies-next";
 export const signUpNewUser = async (
   newUserData: IUser,
   cartData: ICart,
-  wishlistData: IWishlist
+  wishlistData: IWishlist,
+  orderData: IOrder
 ) => {
   try {
     const existingUsersDatabase = await axios.get(`${BASE_URL}/users`);
@@ -29,10 +31,12 @@ export const signUpNewUser = async (
       `${BASE_URL}/wishlist`,
       wishlistData
     );
+    const orderResponse = await axios.post(`${BASE_URL}/order`, orderData);
     return {
       user: userResponse.data,
       cart: cartResponse.data,
       wishlist: wishlistResponse.data,
+      order: orderResponse.data,
     };
   } catch (error) {
     if (axios.isAxiosError(error) && !error.response) {

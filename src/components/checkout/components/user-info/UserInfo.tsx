@@ -1,4 +1,4 @@
-import React from "react";
+import Edit from "@/assets/images/personal-data-icons/edit.svg";
 import {
   Box,
   Card,
@@ -11,10 +11,11 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import Edit from "@/assets/images/personal-data-icons/edit.svg";
-import { useGetUserInfo } from "../../hook";
-import { fetchIdCookie } from "@/layout/navbar/services";
 import Link from "next/link";
+import React from "react";
+import { useGetUserInfo } from "../../hook";
+import useShipmentCostStore from "@/stores/useShipmentCostStore";
+
 const options = [
   {
     label: {
@@ -22,7 +23,7 @@ const options = [
       time: "7-30 business days",
     },
     price: "$0",
-    value: "option1",
+    value: 0,
   },
   {
     label: {
@@ -30,7 +31,7 @@ const options = [
       time: "3-14 business days",
     },
     price: "$7.50",
-    value: "option2",
+    value: 7.5,
   },
   {
     label: {
@@ -38,18 +39,23 @@ const options = [
       time: "1-3 business days",
     },
     price: "$22.50",
-    value: "option3",
+    value: 22.5,
   },
 ];
 
 const UserInfo: React.FC = () => {
-  const [selectedValue, setSelectedValue] = React.useState("");
-  const userId = fetchIdCookie();
-  const { data: usersInfo } = useGetUserInfo(userId);
+  const { shipmentCost, setShipmentCost } = useShipmentCostStore();
+  // const [selectedValue, setSelectedValue] = React.useState(22.5);
+  const { data: usersInfo } = useGetUserInfo();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedValue((event.target as HTMLInputElement).value);
+    // setSelectedValue((event.target as HTMLInputElement).value);
+    const chosenShipmentCost = Number((event.target as HTMLInputElement).value);
+    setShipmentCost(chosenShipmentCost);
+    console.log(chosenShipmentCost);
+    // console.log(selectedValue);
   };
+
   return (
     <Stack direction={"column"}>
       <Card sx={{ width: "624px", height: "507px" }}>
@@ -91,7 +97,7 @@ const UserInfo: React.FC = () => {
                 justifyContent={"space-between"}
               >
                 {usersInfo ? usersInfo.address : "address"}
-                <Box component={"img"} src={Edit.src}/>
+                <Box component={"img"} src={Edit.src} />
               </Box>
             </Grid>
             <Grid item xs={12}>
@@ -99,7 +105,7 @@ const UserInfo: React.FC = () => {
                 Shipping Method
               </Typography>
               <FormControl component="fieldset" fullWidth>
-                <RadioGroup value={selectedValue} onChange={handleChange}>
+                <RadioGroup value={shipmentCost} onChange={handleChange}>
                   {options.map((option) => (
                     <Box
                       key={option.value}
@@ -108,14 +114,12 @@ const UserInfo: React.FC = () => {
                         flexDirection: "column",
                         justifyContent: "space-between",
                         backgroundColor:
-                          selectedValue === option.value
-                            ? "#e5eeff"
-                            : "#F6F6F6",
+                          shipmentCost === option.value ? "#e5eeff" : "#F6F6F6",
                         padding: 1,
                         marginBottom: 1,
                         borderRadius: "8px",
                         border:
-                          selectedValue === option.value
+                          shipmentCost === option.value
                             ? "1px solid #78ABF9"
                             : "#F6F6F6",
                       }}
@@ -151,7 +155,9 @@ const UserInfo: React.FC = () => {
           </Grid>
         </CardContent>
       </Card>
-      <Link href={"/cart"} className="text-xl text-[#0C68F4] mx-5 my-8 ">Return to cart</Link>
+      <Link href={"/cart"} className="text-xl text-[#0C68F4] mx-5 my-8 ">
+        Return to cart
+      </Link>
     </Stack>
   );
 };

@@ -1,10 +1,33 @@
-import { useQuery } from "@tanstack/react-query";
-import { getUserInfo, getUserWishlistItems } from "../services";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  getUserInfo,
+  getUserOrdersHistory,
+  getUserWishlistItems,
+  updateUserInfo,
+} from "../services";
+import { queryClient } from "@/pages/_app";
+import { UpdateUserInfoParams } from "./types";
 
 export const useGetUserInfo = () => {
   return useQuery({
-    queryKey: ["aacount-user-info"],
+    queryKey: ["account-user-info"],
     queryFn: () => getUserInfo(),
+  });
+};
+
+export const useGetUserOrdersHistory = () => {
+  return useQuery({
+    queryKey: ["user-orders-history"],
+    queryFn: () => getUserOrdersHistory(),
+  });
+};
+
+export const useUpdateUserInfo = () => {
+  return useMutation({
+    mutationFn: (params: UpdateUserInfoParams) => updateUserInfo(params),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["account-user-info"] });
+    },
   });
 };
 

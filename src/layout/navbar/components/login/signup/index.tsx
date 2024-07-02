@@ -56,8 +56,12 @@ export default function SignUp({ setIsSignIn, onClose }: Props) {
       id: universalId,
       wishlistProducts: [],
     };
+    const orderData = {
+      id: universalId,
+      ordersHistory: [],
+    };
     mutate(
-      { newUserData: userData, cartData, wishlistData },
+      { newUserData: userData, cartData, wishlistData, orderData },
       {
         onSuccess: () => {
           setIdCookie(userData.id);

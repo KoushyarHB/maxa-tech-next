@@ -112,6 +112,7 @@ const CartItemDetails = ({ cartItemProps, changeComponent }: Props) => {
               alignItems="center"
               gap={1}
               justifyContent="center"
+              mr="26px"
             >
               <Box
                 onClick={() => handleRemoveCartProduct(cartItemProps.productId)}

@@ -2,10 +2,11 @@ import Card from "@/components/shared/card/components";
 import CartItem from "@/components/shared/cart-item/CartItem";
 import { useGetCartItems } from "@/layout/navbar/hooks";
 import { fetchIdCookie } from "@/layout/navbar/services";
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Button, CardContent, Stack, Typography } from "@mui/material";
 import { useGetProduct } from "../hooks";
-import PaymentDetails from "./paymentDetails/PaymentDetails";
+import PaymentDetails from "./payment-details/PaymentDetails";
 import StepperComponent from "@/components/shared/stepper";
+import Link from "next/link";
 
 export default function Cart() {
   const { data: randomProducts } = useGetProduct();
@@ -34,7 +35,36 @@ export default function Cart() {
             ))}
           </Stack>
           <Stack>
-            <PaymentDetails />
+            <Box
+              sx={{
+                width: "416px",
+                height: "267px",
+                border: "1px solid rgba(0, 0, 0, 0.12)",
+                borderRadius: "8px",
+              }}
+            >
+              <CardContent sx={{ display: "flex", flexDirection: "column" }}>
+                <Typography fontSize={"24px"} fontWeight={"500"} mb={2.5}>
+                  Payment Details
+                </Typography>
+                <PaymentDetails />
+                <Link href="/checkout">
+                  <Button
+                    variant="contained"
+                    sx={{
+                      width: "100%",
+                      mt: "25px",
+                      py: "10px",
+                      fontSize: "16px",
+                      fontWeight: "400",
+                      textTransform: "none",
+                    }}
+                  >
+                    Proceed to Checkout
+                  </Button>
+                </Link>
+              </CardContent>
+            </Box>
           </Stack>
         </Stack>
         <Stack direction={"column"}>

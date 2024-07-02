@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { getUserInfo } from "../services";
 
-export const useGetUserInfo = (userId) => {
+export const useGetUserInfo = () => {
   return useQuery({
-    queryKey: ["users",userId],
-    queryFn: () => getUserInfo(userId),
+    queryKey: ["users"],
+    queryFn: () => getUserInfo(),
     refetchOnWindowFocus: false,
   });
 };

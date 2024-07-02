@@ -1,5 +1,5 @@
+import paypal from "@/assets/images/payment-images/paypal.svg";
 import { useGetUserInfo } from "@/components/checkout/hook";
-import { fetchIdCookie } from "@/layout/navbar/services";
 import {
   Box,
   Card,
@@ -12,9 +12,8 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
 import Link from "next/link";
-import paypal from "@/assets/images/payment-images/paypal.svg";
+import { useState } from "react";
 const options = [
   {
     label: "Credit card",
@@ -28,12 +27,12 @@ const options = [
 
 export default function PaymentInfo() {
   const [selectedValue, setSelectedValue] = useState("");
-  const userId = fetchIdCookie();
-  const { data: usersInfo } = useGetUserInfo(userId);
+  const { data: usersInfo } = useGetUserInfo();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedValue((event.target as HTMLInputElement).value);
   };
+
   return (
     <Stack direction={"column"}>
       <Card sx={{ width: "624px", height: "289px", padding: 1, paddingX: 2 }}>

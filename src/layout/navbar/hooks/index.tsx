@@ -11,7 +11,7 @@ import {
   signInUser,
   signUpNewUser,
 } from "../services";
-import { ICart, IUser, IWishlist } from "./types";
+import { ICart, IOrder, IUser, IWishlist } from "./types";
 import { queryClient } from "@/pages/_app";
 
 export const useAccessCookie = () => {
@@ -36,7 +36,14 @@ export const useSignUpNewUser = () => {
       newUserData: IUser;
       cartData: ICart;
       wishlistData: IWishlist;
-    }) => signUpNewUser(data.newUserData, data.cartData, data.wishlistData),
+      orderData: IOrder;
+    }) =>
+      signUpNewUser(
+        data.newUserData,
+        data.cartData,
+        data.wishlistData,
+        data.orderData
+      ),
   });
 };
 

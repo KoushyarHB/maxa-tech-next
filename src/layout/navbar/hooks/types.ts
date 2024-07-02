@@ -34,3 +34,21 @@ export interface IWishlist {
     color: string;
   }[];
 }
+
+export interface IOrder {
+  orderCode: number;
+  orderStatus: string;
+  orderPlacementDate: string;
+  orderTotal: number;
+  orderReceiverName: string;
+  orderAddress: string;
+  // orderPaymentMethod: string;
+  // orderTransactionId: number;
+  // orderShippingMethod: string;
+  orderItems: ICartProducts[];
+}
+
+export interface IOrders {
+  id: number;
+  ordersHistory: IOrder[];
+}

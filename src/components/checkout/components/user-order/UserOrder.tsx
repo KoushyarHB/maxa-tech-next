@@ -1,6 +1,6 @@
 import CartItem from "@/components/shared/cart-item/CartItem";
 import { useGetCartItems } from "@/layout/navbar/hooks";
-import { fetchIdCookie, getCartItemDetails } from "@/layout/navbar/services";
+import { fetchIdCookie } from "@/layout/navbar/services";
 import {
   Button,
   Card,
@@ -9,10 +9,11 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
-import Payment from "@/components/cart/components/payment/Payment";
-import { discountCodeType } from "../../hook/type";
+import { useState } from "react";
+
+import PaymentDetails from "@/components/cart/components/payment-details/PaymentDetails";
 import Link from "next/link";
+import { discountCodeType } from "../../hook/type";
 
 type ButtonProps = {
   link: string;
@@ -23,44 +24,22 @@ type ButtonProps = {
 export default function UserOrder({ link, action, buttonText }: ButtonProps) {
   const userId = fetchIdCookie();
   const { data: cartItems } = useGetCartItems(Number(userId));
-
-  const shipment = 22.5;
-  const [subtotal, setSubTotal] = useState(0);
-  const [grandTotal, setGrandTotal] = useState(0);
-  const [discount, setDiscount] = useState(0);
   const [discountCodeInput, setDiscountCodeInput] = useState<string>("");
-  const discountCode: discountCodeType = {
-    bronze: "10",
-    silver: "20",
-    gold: "30",
-  };
 
-  useEffect(() => {
-    let newSubtotal = 0;
-    let newDiscount = 0;
-    let newGrandTotal = 0;
-    if (cartItems) {
-      cartItems?.map(async (item: any) => {
-        const productDetail = await getCartItemDetails(item.productId);
-        newDiscount +=
-          (productDetail.discount.percent * productDetail.price) / 100;
-        newSubtotal += productDetail.price;
-        newGrandTotal = newSubtotal - newDiscount + shipment;
-        setSubTotal(newSubtotal);
-        setDiscount(newDiscount);
-        setGrandTotal(newGrandTotal);
-      });
-    }
-  }, [cartItems]);
+  // const discountCode: discountCodeType = {
+  //   bronze: "10",
+  //   silver: "20",
+  //   gold: "30",
+  // };
 
-  const handelDiscountApply = () => {
-    const discountValue = discountCode[discountCodeInput];
-    if (discountValue) {
-      const discountPercent = parseInt(discountValue);
-      const discountAmount = (subtotal * discountPercent) / 100;
-      setGrandTotal(subtotal - discountAmount + shipment);
-    }
-  };
+  // const handelDiscountApply = () => {
+  //   const discountValue = discountCode[discountCodeInput];
+  //   if (discountValue) {
+  //     const discountPercent = parseInt(discountValue);
+  //     const discountAmount = (subtotal * discountPercent) / 100;
+  //     setGrandTotal(subtotal - discountAmount + shipment);
+  //   }
+  // };
 
   return (
     <Card sx={{ minHeight: "338px" }}>
@@ -87,19 +66,14 @@ export default function UserOrder({ link, action, buttonText }: ButtonProps) {
                 />
                 <Button
                   variant="outlined"
-                  onClick={handelDiscountApply}
+                  // onClick={handelDiscountApply}
                   sx={{ width: "133px", borderRadius: "8px" }}
                 >
                   Apply
                 </Button>
               </Stack>
             </Stack>
-            <Payment
-              subtotal={subtotal}
-              discount={discount}
-              shipment={shipment}
-              grandTotal={grandTotal}
-            />
+            <PaymentDetails />
             <Link href={link}>
               <Button
                 onClick={action}
