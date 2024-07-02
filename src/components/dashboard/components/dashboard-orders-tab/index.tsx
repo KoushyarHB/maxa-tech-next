@@ -17,24 +17,24 @@ import {
   Typography,
 } from "@mui/material";
 import DataSaverOnOutlinedIcon from "@mui/icons-material/DataSaverOnOutlined";
-import Swal from "sweetalert2";
-import { BASE_URL } from "@/constants/urls";
-import axios from "axios";
+import { useGetAllOrders, useGetAllProductsToDashboard } from "../../hook";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import EditProducts from "../editModal";
-import AddProducts from "../addModal";
-import { useGetAllDashboardProducts } from "../../hook";
+import EditProducts from "../modalEdit";
+import AddProducts from "../addProducts";
+import { handleDelete } from "../../services";
 
-export default function ProductsTable() {
-  const { data, isLoading, error } = useGetAllDashboardProducts();
+export default function DahsboardOrdersTab() {
+  const { data, isLoading, error } = useGetAllOrders();
+  console.log(data);
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [selectedProduct, setSelectedProduct] = React.useState<IProduct | null>(
     null
   );
-  const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
-  const [isAddModalOpen, setIsAddModalOpen] = React.useState(false);
+  const [isModalEditOpen, setIsModalEditOpen] = React.useState(false);
+  const [isModalAddOpen, setIsModalAddOpen] = React.useState(false);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -49,51 +49,14 @@ export default function ProductsTable() {
 
   const handleEdit = (product: IProduct) => {
     setSelectedProduct(product);
-    setIsEditModalOpen(true);
+    setIsModalEditOpen(true);
   };
 
-  async function handleDelete(id: number) {
-    console.log(id);
-    const result = await Swal.fire({
-      title: "Sure you want to delete this item?",
-      text: "This action is irreversible.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, I'm sure",
-      cancelButtonText: "Cancel",
-    });
-    if (result.isConfirmed) {
-      try {
-        await axios.delete(`${BASE_URL}/products/${id}`);
-        Swal.fire({
-          title: "Deleted",
-          text: "Item was deleted successfuly.",
-          icon: "success",
-        });
-      } catch (error) {
-        Swal.fire({
-          title: "Error",
-          text: "Someething went wrong.",
-          icon: "error",
-        });
-      }
-    } else {
-      Swal.fire({
-        title: "Canceled",
-        text: "Deletion canceled.",
-        icon: "info",
-      });
-    }
-  }
-
-  const handleCloseEditModal = () => {
-    setIsEditModalOpen(false);
+  const handleCloseModalEdit = () => {
+    setIsModalEditOpen(false);
   };
-
-  const handleCloseAddModal = () => {
-    setIsAddModalOpen(false);
+  const handleCloseModalAdd = () => {
+    setIsModalAddOpen(false);
   };
 
   if (isLoading) {
@@ -129,12 +92,12 @@ export default function ProductsTable() {
   const rows = data || [];
 
   const handleAdd = () => {
-    setIsAddModalOpen(true);
+    setIsModalAddOpen(true);
   };
 
   return (
     <Box>
-      <Box
+      {/* <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
@@ -150,20 +113,34 @@ export default function ProductsTable() {
         <Button onClick={handleAdd}>
           <DataSaverOnOutlinedIcon fontSize="large" color="success" />
         </Button>
-      </Box>
+      </Box> */}
       <Box>
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
           <TableContainer sx={{ maxHeight: 440 }}>
-            <Table aria-label="sticky table">
+            <Table stickyHeader aria-label="sticky table">
               <TableHead>
                 <TableRow>
-                  <TableCell>ID</TableCell>
-                  <TableCell align="left">Image</TableCell>
-                  <TableCell align="left">Product Name</TableCell>
-                  <TableCell align="center">Price</TableCell>
-                  <TableCell align="center">Category</TableCell>
-                  <TableCell align="center">Brand</TableCell>
-                  <TableCell align="center">Actions</TableCell>
+                  <TableCell sx={{ backgroundColor: "#cacaca" }} align="center">
+                    User Id
+                  </TableCell>
+                  <TableCell sx={{ backgroundColor: "#cacaca" }} align="left">
+                    Order Code
+                  </TableCell>
+                  <TableCell sx={{ backgroundColor: "#cacaca" }} align="left">
+                    Placement Date
+                  </TableCell>
+                  <TableCell sx={{ backgroundColor: "#cacaca" }} align="center">
+                    Order Total
+                  </TableCell>
+                  <TableCell sx={{ backgroundColor: "#cacaca" }} align="center">
+                    Order Status
+                  </TableCell>
+                  <TableCell sx={{ backgroundColor: "#cacaca" }} align="center">
+                    Receiver Name
+                  </TableCell>
+                  <TableCell sx={{ backgroundColor: "#cacaca" }} align="center">
+                    Actions
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -171,21 +148,24 @@ export default function ProductsTable() {
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => (
                     <TableRow hover key={row.id}>
-                      <TableCell align="center">{row.id}</TableCell>
+                      <TableCell align="center">{row.userId}</TableCell>
                       <TableCell align="left">
-                        <Box
+                        {/* <Box
                           component="img"
-                          src={row.thumbnailImage}
+                          src={row.orderCode}
                           alt="Product"
                           style={{ width: 50, height: 50 }}
-                        />
+                        /> */}
+                        {row.orderCode}
                       </TableCell>
-                      <TableCell align="left">{row.name}</TableCell>
+                      <TableCell align="left">
+                        {row.orderPlacementDate}
+                      </TableCell>
+                      <TableCell align="center">${row.orderTotal}</TableCell>
+                      <TableCell align="center">{row.orderStatus}</TableCell>
                       <TableCell align="center">
-                        ${row.price.toFixed(2)}
+                        {row.orderReceiverName}
                       </TableCell>
-                      <TableCell align="center">{row.categoryName}</TableCell>
-                      <TableCell align="center">{row.brandName}</TableCell>
                       <TableCell align="center">
                         <IconButton onClick={() => handleEdit(row)}>
                           <EditIcon />
@@ -207,8 +187,9 @@ export default function ProductsTable() {
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
+            sx={{ mt: "10px" }}
           />
-          <Modal open={isEditModalOpen} onClose={handleCloseEditModal}>
+          <Modal open={isModalEditOpen} onClose={handleCloseModalEdit}>
             <Box
               sx={{
                 position: "absolute",
@@ -219,15 +200,16 @@ export default function ProductsTable() {
                 bgcolor: "background.paper",
                 boxShadow: 24,
                 p: 4,
+                borderRadius: "5px",
               }}
             >
               <EditProducts
                 product={selectedProduct}
-                setIsModalOpen={setIsEditModalOpen}
+                setIsModalOpen={setIsModalEditOpen}
               />
             </Box>
           </Modal>
-          <Modal open={isAddModalOpen} onClose={handleCloseAddModal}>
+          <Modal open={isModalAddOpen} onClose={handleCloseModalAdd}>
             <Box
               sx={{
                 position: "absolute",
@@ -238,9 +220,10 @@ export default function ProductsTable() {
                 bgcolor: "background.paper",
                 boxShadow: 24,
                 p: 4,
+                borderRadius: "5px",
               }}
             >
-              <AddProducts />
+              <AddProducts setIsModalOpen={setIsModalAddOpen} />
             </Box>
           </Modal>
         </Paper>

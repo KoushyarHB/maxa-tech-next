@@ -19,7 +19,11 @@ import { IProduct } from "@/components/home/hooks/types";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-function AddProducts() {
+interface AddProductsProps {
+  setIsModalOpen: (isOpen: boolean) => void;
+}
+
+function AddProducts({ setIsModalOpen }: AddProductsProps) {
   const [disabled, setDisabled] = useState(true);
   const { mutate } = usePostData();
 
@@ -30,7 +34,6 @@ function AddProducts() {
     reset,
     formState: { errors },
   } = useForm<IProduct>();
-
 
   const onSubmit = (formData: IProduct) => {
     const data = {
@@ -58,10 +61,13 @@ function AddProducts() {
 
     mutate(data, {
       onSuccess: (response: any) => {
-        if (response.message === "Product with the same ID or name already exists") {
+        if (
+          response.message === "Product with the same ID or name already exists"
+        ) {
           toast.warning(response.message);
         } else {
           toast.success("Product added successfully");
+          setIsModalOpen(false);
           reset();
         }
       },

@@ -7,7 +7,7 @@ import OrderCard from "@/components/shared/order-card/components";
 
 export default function Orders() {
   const { data } = useGetUserOrdersHistory();
-  console.log(data);
+
   return (
     <Box>
       <TabTitle
@@ -18,6 +18,7 @@ export default function Orders() {
         sx={{
           width: "911px",
           pt: "16px",
+          mb: "100px",
         }}
       >
         <Stack

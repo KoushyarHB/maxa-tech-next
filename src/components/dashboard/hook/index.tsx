@@ -1,12 +1,19 @@
 // hooks/useGetAllProductsToDashboard.ts
 import { IProduct } from "@/components/home/hooks/types";
-import { editData, getAllDashboardProducts, postData } from "../services";
+import {
+  editData,
+  editQuantityPrice,
+  getAllOrders,
+  getAllProductsToDashboard,
+  postData,
+} from "../services";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { IOrders } from "@/layout/navbar/hooks/types";
 
-export const useGetAllDashboardProducts = () => {
+export const useGetAllProductsToDashboard = () => {
   return useQuery<IProduct[]>({
-    queryKey: ["products-dashboard"],
-    queryFn: getAllDashboardProducts,
+    queryKey: ["products-Dashboard"],
+    queryFn: getAllProductsToDashboard,
   });
 };
 
@@ -22,5 +29,37 @@ export const useEditData = () => {
     mutationKey: ["edit-data"],
     mutationFn: ({ id, product }: { id: number; product: IProduct }) =>
       editData(id, product),
+  });
+};
+
+export const useEditQuantityPrice = () => {
+  return useMutation({
+    mutationKey: ["edit-QuantityPrice"],
+    mutationFn: ({ id, product }: { id: number; product: IProduct }) =>
+      editQuantityPrice(id, product),
+    onError: (error) => {
+      console.log("Mutation failed:", error);
+    },
+  });
+};
+
+// export const useEditQuantityPrice = () => {
+//   return useMutation({
+//     mutationKey: ["edit-QuantityPrice"],
+//     mutationFn: (products: { id: number; product: IProduct }[]) =>
+//       editQuantityPrices(products),
+//     onError: (error) => {
+//       console.log("Mutation failed:", error);
+//     },
+//     onSuccess: () => {
+//       console.log("Mutation succeeded");
+//     },
+//   });
+// };
+
+export const useGetAllOrders = () => {
+  return useQuery({
+    queryKey: ["get-all-orders"],
+    queryFn: () => getAllOrders(),
   });
 };

@@ -15,9 +15,41 @@ export function middleware(req: NextRequest) {
     }
   }
 
+  if (pathname.startsWith("/cart")) {
+    const userId = getCookie("userId", { req });
+
+    if (!userId) {
+      url.pathname = "/";
+      return NextResponse.redirect(url);
+    }
+  }
+
+  if (pathname.startsWith("/checkout")) {
+    const userId = getCookie("userId", { req });
+
+    if (!userId) {
+      url.pathname = "/";
+      return NextResponse.redirect(url);
+    }
+  }
+
+  if (pathname.startsWith("/payment")) {
+    const userId = getCookie("userId", { req });
+
+    if (!userId) {
+      url.pathname = "/";
+      return NextResponse.redirect(url);
+    }
+  }
+
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: "/dashboard/:path*",
+  matcher: [
+    "/dashboard/:path*",
+    "/cart/:path*",
+    "/checkout/:path*",
+    "/payment/:path*",
+  ],
 };

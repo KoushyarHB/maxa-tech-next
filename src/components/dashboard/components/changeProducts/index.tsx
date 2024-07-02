@@ -15,15 +15,15 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import EditProducts from "../editModal"; // Adjust the import based on your file structure
-import { useGetAllDashboardProducts } from "@/components/dashboard/hook/index";
+import EditProducts from "../modalEdit"; // Adjust the import based on your file structure
+import { useGetAllProductsToDashboard } from "@/components/dashboard/hook/index";
 import { IProduct } from "@/components/home/hooks/types";
 import Swal from "sweetalert2";
 import { BASE_URL } from "@/constants/urls";
 import axios from "axios";
 
 const ChangeProducts: React.FC = () => {
-  const { data, isLoading, error } = useGetAllDashboardProducts();
+  const { data, isLoading, error } = useGetAllProductsToDashboard();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);

@@ -2,9 +2,11 @@ import * as React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import TableProducts from "./tableProducts";
 import { Box, Breadcrumbs, Link, Stack } from "@mui/material";
-import ProductsTable from "./productsTable";
-import QuantityPriceTab from "./quantityPriceTab";
+import QuantityPriceTab from "@/components/dashboard/components/quantityPriceTab/index";
+import StackBars from "./chart";
+import DahsboardOrdersTab from "./dashboard-orders-tab";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -41,7 +43,6 @@ export default function BasicTabs() {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-
   const breadcrumbs = [
     <Link
       sx={{ fontSize: "18px" }}
@@ -62,9 +63,8 @@ export default function BasicTabs() {
       Dashboard
     </Link>,
   ];
-
   return (
-    <Box sx={{ width: "100%", height: "62vh", mb: "170px" }}>
+    <Box sx={{ width: "100%", height: "62vh", mb: "200px" }}>
       <Stack sx={{ mb: "48px" }} spacing={2} p={2}>
         <Breadcrumbs
           separator={
@@ -81,15 +81,23 @@ export default function BasicTabs() {
           onChange={handleChange}
           aria-label="basic tabs example"
         >
-          <Tab label="Products" {...a11yProps(0)} />
-          <Tab label="Quantity/Price" {...a11yProps(1)} />
+          <Tab label="products" {...a11yProps(0)} />
+          <Tab label="quantity/price" {...a11yProps(1)} />
+          {/* <Tab label="chart" {...a11yProps(2)} /> */}
+          <Tab label="orders" {...a11yProps(3)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <ProductsTable />
+        <TableProducts />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         <QuantityPriceTab />
+      </CustomTabPanel>
+      {/* <CustomTabPanel value={value} index={2}>
+        <StackBars />
+      </CustomTabPanel> */}
+      <CustomTabPanel value={value} index={2}>
+        <DahsboardOrdersTab />
       </CustomTabPanel>
     </Box>
   );

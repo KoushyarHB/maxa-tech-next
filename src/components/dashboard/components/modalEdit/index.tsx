@@ -24,7 +24,7 @@ interface EditProductsProps {
 }
 
 function EditProducts({ product, setIsModalOpen }: EditProductsProps) {
-  const [disabled, setDisabled] = useState(true);
+  const [disabled, setDisabled] = useState(false);
   const { register, handleSubmit } = useForm<IProduct>({
     defaultValues: product || ({} as IProduct),
   });
@@ -37,11 +37,11 @@ function EditProducts({ product, setIsModalOpen }: EditProductsProps) {
         { id: product.id, product: data },
         {
           onSuccess: () => {
-            toast.success("Product updated successfully.");
+            toast.success("Product updated successfully");
             setIsModalOpen(false);
           },
           onError: () => {
-            toast.error("Failed to update product.");
+            toast.error("Failed to update product");
           },
         }
       );
@@ -54,13 +54,6 @@ function EditProducts({ product, setIsModalOpen }: EditProductsProps) {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box sx={{ display: "flex", flexDirection: "column", gap: "24px" }}>
           <Box sx={{ display: "flex", gap: "10px" }}>
-            <TextField
-              fullWidth
-              label="ID Product"
-              variant="outlined"
-              {...register("id")}
-              defaultValue={product?.id || ""}
-            />
             <TextField
               fullWidth
               label="Name Product"
@@ -102,7 +95,7 @@ function EditProducts({ product, setIsModalOpen }: EditProductsProps) {
           <FormControlLabel
             control={
               <Switch
-                checked={disabled}
+                checked={!disabled}
                 onChange={() => setDisabled(!disabled)}
               />
             }
