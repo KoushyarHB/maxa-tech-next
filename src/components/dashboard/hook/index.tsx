@@ -1,18 +1,22 @@
 // hooks/useGetAllProductsToDashboard.ts
 import { IProduct } from "@/components/home/hooks/types";
+import { queryClient } from "@/pages/_app";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   editData,
+  editOrder,
   editQuantityPrice,
   getAllOrders,
   getAllProductsToDashboard,
   postData,
+  updatePrices,
+  updateQuantities,
 } from "../services";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { IOrders } from "@/layout/navbar/hooks/types";
+import { IDashboardOrder } from "./type";
 
 export const useGetAllProductsToDashboard = () => {
   return useQuery<IProduct[]>({
-    queryKey: ["products-Dashboard"],
+    queryKey: ["products-dashboard"],
     queryFn: getAllProductsToDashboard,
   });
 };
@@ -32,34 +36,38 @@ export const useEditData = () => {
   });
 };
 
-export const useEditQuantityPrice = () => {
+export const useUpdatePrices = () => {
   return useMutation({
-    mutationKey: ["edit-QuantityPrice"],
-    mutationFn: ({ id, product }: { id: number; product: IProduct }) =>
-      editQuantityPrice(id, product),
-    onError: (error) => {
-      console.log("Mutation failed:", error);
+    mutationFn: updatePrices,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["products-dashboard"] });
     },
   });
 };
 
-// export const useEditQuantityPrice = () => {
-//   return useMutation({
-//     mutationKey: ["edit-QuantityPrice"],
-//     mutationFn: (products: { id: number; product: IProduct }[]) =>
-//       editQuantityPrices(products),
-//     onError: (error) => {
-//       console.log("Mutation failed:", error);
-//     },
-//     onSuccess: () => {
-//       console.log("Mutation succeeded");
-//     },
-//   });
-// };
+export const useUpdateQuantities = () => {
+  return useMutation({
+    mutationFn: updateQuantities,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["products-dashboard"] });
+    },
+  });
+};
 
 export const useGetAllOrders = () => {
   return useQuery({
     queryKey: ["get-all-orders"],
     queryFn: () => getAllOrders(),
+  });
+};
+
+export const useEditOrder = () => {
+  return useMutation({
+    mutationKey: ["edit-order"],
+    mutationFn: ({ id, order }: { id: number; order: IDashboardOrder }) =>
+      editOrder(id, order),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get-all-orders"] });
+    },
   });
 };

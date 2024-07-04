@@ -20,7 +20,7 @@ import DataSaverOnOutlinedIcon from "@mui/icons-material/DataSaverOnOutlined";
 import { useGetAllProductsToDashboard } from "../../hook";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import EditProducts from "../modalEdit";
+import EditProducts from "../edit-modal";
 import AddProducts from "../addProducts";
 import { handleDelete } from "../../services";
 
@@ -98,18 +98,19 @@ export default function TableProducts() {
       <Box
         sx={{
           display: "flex",
-          justifyContent: "space-between",
           alignItems: "center",
           pr: "35px",
           borderRadius: "10px",
           mb: "15px",
         }}
       >
-        <Typography sx={{ pl: "15px", fontWeight: "medium", fontSize: "20px" }}>
-          Add Product
-        </Typography>
-        <Button onClick={handleAdd}>
-          <DataSaverOnOutlinedIcon fontSize="large" color="success" />
+        <Button
+          onClick={handleAdd}
+          variant="outlined"
+          sx={{ fontSize: "20px", fontWeight: "medium", p: 2 }}
+        >
+          <Box sx={{ mr: "15px", textTransform: "none" }}>Add New Product</Box>
+          <DataSaverOnOutlinedIcon sx={{ color: "#0C68F4" }} fontSize="large" />
         </Button>
       </Box>
       <Box>
@@ -182,7 +183,7 @@ export default function TableProducts() {
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
-            sx={{mt:"10px"}}
+            sx={{ mt: "10px" }}
           />
           <Modal open={isModalEditOpen} onClose={handleCloseModalEdit}>
             <Box

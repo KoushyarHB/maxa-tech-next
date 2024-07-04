@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Accordion,
   AccordionDetails,
@@ -9,6 +9,7 @@ import {
   TextField,
   Typography,
   Button,
+  Stack,
 } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import SendIcon from "@mui/icons-material/Send";
@@ -17,6 +18,7 @@ import { useForm } from "react-hook-form";
 import { IProduct } from "@/components/home/hooks/types";
 import { ToastContainer, toast } from "react-toastify";
 import { useEditData } from "../../hook";
+import closeCircle from "@/assets/images/close-circle.png";
 
 interface EditProductsProps {
   product: IProduct | null;
@@ -25,9 +27,22 @@ interface EditProductsProps {
 
 function EditProducts({ product, setIsModalOpen }: EditProductsProps) {
   const [disabled, setDisabled] = useState(false);
-  const { register, handleSubmit } = useForm<IProduct>({
+  const [base64Image, setBase64Image] = useState<string | null>(null);
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    reset,
+    formState: { errors },
+  } = useForm<IProduct>({
     defaultValues: product || ({} as IProduct),
   });
+
+  useEffect(() => {
+    if (base64Image) {
+      setValue("thumbnailImage", base64Image);
+    }
+  }, [base64Image, setValue]);
 
   const mutation = useEditData();
 
@@ -48,41 +63,94 @@ function EditProducts({ product, setIsModalOpen }: EditProductsProps) {
     }
   };
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setBase64Image(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemoveUploadedImage = () => {
+    setBase64Image(null);
+    setValue("thumbnailImage", "");
+  };
+
   return (
     <>
       <ToastContainer />
       <form onSubmit={handleSubmit(onSubmit)}>
+        <Stack
+          sx={{ justifyContent: "space-between", mb: "20px" }}
+          direction={"row"}
+        >
+          <Box flexGrow={1}></Box>
+          <Box
+            onClick={() => setIsModalOpen(false)}
+            sx={{ cursor: "pointer" }}
+            component={"img"}
+            src={closeCircle.src}
+          ></Box>
+        </Stack>
         <Box sx={{ display: "flex", flexDirection: "column", gap: "24px" }}>
           <Box sx={{ display: "flex", gap: "10px" }}>
             <TextField
               fullWidth
-              label="Name Product"
+              id="outlined-basic-name"
+              label="Product Name"
               variant="outlined"
-              {...register("name")}
-              defaultValue={product?.name || ""}
+              {...register("name", { required: "Name is required" })}
+              error={!!errors.name}
+              helperText={errors.name?.message}
             />
             <TextField
               fullWidth
+              id="outlined-basic-category"
               label="Category"
               variant="outlined"
-              {...register("categoryName")}
-              defaultValue={product?.categoryName || ""}
+              {...register("categoryName", {
+                required: "Category is required",
+              })}
+              error={!!errors.categoryName}
+              helperText={errors.categoryName?.message}
+            />
+            <TextField
+              fullWidth
+              id="outlined-basic-category"
+              label="Brand"
+              variant="outlined"
+              {...register("brandName", {
+                required: "Brand name is required",
+              })}
+              error={!!errors.brandName}
+              helperText={errors.brandName?.message}
             />
           </Box>
           <Box sx={{ display: "flex", gap: "10px" }}>
             <TextField
               fullWidth
+              id="outlined-basic-description"
               label="Description"
               variant="outlined"
-              {...register("longDescription")}
-              defaultValue={product?.longDescription || ""}
+              {...register("longDescription", {
+                required: "Description is required",
+              })}
+              error={!!errors.longDescription}
+              helperText={errors.longDescription?.message}
             />
             <TextField
               fullWidth
+              id="outlined-basic-intro"
               label="Intro"
               variant="outlined"
-              {...register("shortDescription")}
-              defaultValue={product?.shortDescription || ""}
+              {...register("shortDescription", {
+                required: "Intro is required",
+              })}
+              error={!!errors.shortDescription}
+              helperText={errors.shortDescription?.message}
             />
           </Box>
           <TextField
@@ -92,6 +160,36 @@ function EditProducts({ product, setIsModalOpen }: EditProductsProps) {
             {...register("thumbnailImage")}
             defaultValue={product?.thumbnailImage || ""}
           />
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <Button variant="contained" component="label">
+              Upload Image
+              <input
+                type="file"
+                hidden
+                accept="image/*"
+                onChange={handleFileChange}
+              />
+            </Button>
+            {base64Image && (
+              <>
+                Image uploaded:
+                <Box
+                  onClick={() => handleRemoveUploadedImage()}
+                  sx={{ cursor: "pointer", color: "red", width: "20px" }}
+                  component={"img"}
+                  src={closeCircle.src}
+                ></Box>
+                <Box
+                  component={"img"}
+                  src={base64Image}
+                  sx={{ width: "60px" }}
+                ></Box>
+                <Typography sx={{ wordBreak: "break-all" }}>
+                  {base64Image.slice(0, 30)}...
+                </Typography>
+              </>
+            )}
+          </Box>
           <FormControlLabel
             control={
               <Switch

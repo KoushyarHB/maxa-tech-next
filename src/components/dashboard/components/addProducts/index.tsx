@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Accordion,
   AccordionDetails,
@@ -6,6 +6,7 @@ import {
   Box,
   Button,
   FormControlLabel,
+  Stack,
   Switch,
   TextField,
   Typography,
@@ -18,6 +19,7 @@ import { usePostData } from "../../hook";
 import { IProduct } from "@/components/home/hooks/types";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import closeCircle from "@/assets/images/close-circle.png";
 
 interface AddProductsProps {
   setIsModalOpen: (isOpen: boolean) => void;
@@ -25,6 +27,8 @@ interface AddProductsProps {
 
 function AddProducts({ setIsModalOpen }: AddProductsProps) {
   const [disabled, setDisabled] = useState(true);
+  const [base64Image, setBase64Image] = useState<string | null>(null);
+
   const { mutate } = usePostData();
 
   const {
@@ -34,6 +38,12 @@ function AddProducts({ setIsModalOpen }: AddProductsProps) {
     reset,
     formState: { errors },
   } = useForm<IProduct>();
+
+  useEffect(() => {
+    if (base64Image) {
+      setValue("thumbnailImage", base64Image);
+    }
+  }, [base64Image, setValue]);
 
   const onSubmit = (formData: IProduct) => {
     const data = {
@@ -53,9 +63,9 @@ function AddProducts({ setIsModalOpen }: AddProductsProps) {
 
     if (!disabled) {
       data.discount = {
-        percent: formData.discount?.percent || 0,
-        startDate: formData.discount?.startDate || null,
-        endDate: formData.discount?.endDate || null,
+        percent: formData.discount?.percent,
+        startDate: formData.discount?.startDate,
+        endDate: formData.discount?.endDate,
       };
     }
 
@@ -88,10 +98,38 @@ function AddProducts({ setIsModalOpen }: AddProductsProps) {
     }
   };
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setBase64Image(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemoveUploadedImage = () => {
+    setBase64Image(null);
+    setValue("thumbnailImage", "");
+  };
+
   return (
     <>
       <ToastContainer />
       <form onSubmit={handleSubmit(onSubmit)} action="">
+        <Stack
+          sx={{ justifyContent: "space-between", mb: "20px" }}
+          direction={"row"}
+        >
+          <Box flexGrow={1}></Box>
+          <Box
+            onClick={() => setIsModalOpen(false)}
+            sx={{ cursor: "pointer" }}
+            component={"img"}
+            src={closeCircle.src}
+          ></Box>
+        </Stack>
         <Box sx={{ display: "flex", flexDirection: "column", gap: "24px" }}>
           <Box
             sx={{
@@ -104,7 +142,7 @@ function AddProducts({ setIsModalOpen }: AddProductsProps) {
             <TextField
               fullWidth
               id="outlined-basic-id"
-              label="ID Product"
+              label="Product ID"
               variant="outlined"
               {...register("id", {
                 required: "ID is required",
@@ -142,10 +180,34 @@ function AddProducts({ setIsModalOpen }: AddProductsProps) {
               label="Brand"
               variant="outlined"
               {...register("brandName", {
-                required: "Brand Name is required",
+                required: "Brand name is required",
               })}
               error={!!errors.brandName}
               helperText={errors.brandName?.message}
+            />
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              width: "100%",
+              justifyContent: "space-between",
+              gap: "10px",
+            }}
+          >
+            <TextField
+              fullWidth
+              id="outlined-basic-price"
+              label="Available Quantity"
+              variant="outlined"
+              {...register("availableQuantity", {
+                required: "Available quantity is required",
+                pattern: {
+                  value: /^[0-9]+$/,
+                  message: "Available quantity must be a valid number",
+                },
+              })}
+              error={!!errors.price}
+              helperText={errors.price?.message}
             />
             <TextField
               fullWidth
@@ -199,12 +261,43 @@ function AddProducts({ setIsModalOpen }: AddProductsProps) {
             fullWidth
             label="Image URL"
             variant="outlined"
+            defaultValue={base64Image}
             {...register("thumbnailImage", {
               required: "Image URL is required",
             })}
             error={!!errors.thumbnailImage}
             helperText={errors.thumbnailImage?.message}
           />
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <Button variant="contained" component="label">
+              Upload Image
+              <input
+                type="file"
+                hidden
+                accept="image/*"
+                onChange={handleFileChange}
+              />
+            </Button>
+            {base64Image && (
+              <>
+                Image uploaded:
+                <Box
+                  onClick={() => handleRemoveUploadedImage()}
+                  sx={{ cursor: "pointer", color: "red", width: "20px" }}
+                  component={"img"}
+                  src={closeCircle.src}
+                ></Box>
+                <Box
+                  component={"img"}
+                  src={base64Image}
+                  sx={{ width: "60px" }}
+                ></Box>
+                <Typography sx={{ wordBreak: "break-all" }}>
+                  {base64Image.slice(0, 30)}...
+                </Typography>
+              </>
+            )}
+          </Box>
           <FormControlLabel
             sx={{
               display: "block",

@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import EditProducts from "../modalEdit"; // Adjust the import based on your file structure
+import EditProducts from "../edit-modal"; // Adjust the import based on your file structure
 import { useGetAllProductsToDashboard } from "@/components/dashboard/hook/index";
 import { IProduct } from "@/components/home/hooks/types";
 import Swal from "sweetalert2";

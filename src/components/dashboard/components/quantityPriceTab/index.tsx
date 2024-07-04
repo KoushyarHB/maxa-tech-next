@@ -1,5 +1,9 @@
-import React, { useState } from "react";
+import { IProduct } from "@/components/home/hooks/types";
+import SendIcon from "@mui/icons-material/Send";
 import {
+  Box,
+  Button,
+  CircularProgress,
   Paper,
   Table,
   TableBody,
@@ -8,30 +12,34 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  Box,
-  CircularProgress,
-  Button,
   Typography,
-  TextField,
 } from "@mui/material";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import SendIcon from "@mui/icons-material/Send";
+import { ToastContainer } from "react-toastify";
+import {
+  useGetAllProductsToDashboard,
+  useUpdatePrices,
+  useUpdateQuantities,
+} from "../../hook";
 import PriceCell from "./priceCell";
 import QuantityCell from "./quantityCell";
-import { useEditQuantityPrice, useGetAllProductsToDashboard } from "../../hook";
-import { IProduct } from "@/components/home/hooks/types";
-import { ToastContainer, toast } from "react-toastify";
-import { updatePrices } from "../../services";
 
 export default function QuantityPriceTab() {
   const { data, isLoading, error } = useGetAllProductsToDashboard();
-  const { register, handleSubmit } = useForm();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [pricesRowToBeEdited, setPricesRowToBeEdited] = useState<number | null>(
+  const { register, handleSubmit } = useForm();
+  const [priceRowToBeEdited, setPriceRowToBeEdited] = useState<number | null>(
     null
   );
   const [priceRowsToBeUpdated, setPriceRowsToBeUpdated] = useState(new Set());
+  const [quantityRowToBeEdited, setQuantityRowToBeEdited] = useState<
+    number | null
+  >(null);
+  const [quantityRowsToBeUpdated, setQuantityRowsToBeUpdated] = useState(
+    new Set()
+  );
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -44,40 +52,39 @@ export default function QuantityPriceTab() {
     setPage(0);
   };
 
-  const mutation = useEditQuantityPrice();
+  const priceUpdateMutation = useUpdatePrices();
+  const quantityUpdateMutation = useUpdateQuantities();
 
   const onSubmit = (data: IProduct) => {
-    console.log(data);
-    console.log(priceRowsToBeUpdated);
-    let dataToBeUpdated = [];
+    // let dataToBeUpdated = [];
+    // for (let key in data) {
+    //   if (priceRowsToBeUpdated.has(key)) {
+    //     dataToBeUpdated.push([key.split("-")[1], data[key]]);
+    //   }
+    // }
+    // console.log(dataToBeUpdated);
+    // priceUpdateMutation.mutate(dataToBeUpdated);
+    // setPriceRowToBeEdited(null);
+    let dataToBeUpdatedForPrices = [];
+    let dataToBeUpdatedForQuantities = [];
+
     for (let key in data) {
       if (priceRowsToBeUpdated.has(key)) {
-        dataToBeUpdated.push([key.split("-")[1], data[key]]);
+        dataToBeUpdatedForPrices.push([key.split("-")[1], data[key]]);
       }
-      // if (!key) {
-      //   dataToBeUpdated.push({ key });
-      // }
+      if (quantityRowsToBeUpdated.has(key)) {
+        dataToBeUpdatedForQuantities.push([key.split("-")[1], data[key]]);
+      }
     }
-    console.log(dataToBeUpdated);
-    updatePrices(dataToBeUpdated);
-    const product = rows?.find((row) => row.id === data.id);
 
-    // console.log(product);
-    // console.log(data.id);
-    if (product) {
-      console.log("ok");
-      mutation.mutate(
-        { id: product.id, product: data },
-        {
-          onSuccess: () => {
-            toast.success("Product updated successfully");
-          },
-          onError: () => {
-            toast.error("Failed to update product");
-          },
-        }
-      );
-    }
+    console.log("Price data to be updated:", dataToBeUpdatedForPrices);
+    console.log("Quantity data to be updated:", dataToBeUpdatedForQuantities);
+
+    priceUpdateMutation.mutate(dataToBeUpdatedForPrices);
+    quantityUpdateMutation.mutate(dataToBeUpdatedForQuantities);
+
+    setPriceRowToBeEdited(null);
+    setQuantityRowToBeEdited(null);
   };
 
   if (isLoading) {
@@ -117,7 +124,7 @@ export default function QuantityPriceTab() {
   }
 
   const rows = data || [];
-  console.log(pricesRowToBeEdited);
+
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -136,7 +143,9 @@ export default function QuantityPriceTab() {
                   <TableCell sx={{ width: "150px" }} align="center">
                     Price ($)
                   </TableCell>
-                  <TableCell align="left">Quantity</TableCell>
+                  <TableCell sx={{ width: "150px" }} align="center">
+                    Quantity
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -157,12 +166,19 @@ export default function QuantityPriceTab() {
                       <PriceCell
                         row={row}
                         register={register}
-                        pricesRowToBeEdited={pricesRowToBeEdited}
-                        setPricesRowToBeEdited={setPricesRowToBeEdited}
+                        priceRowToBeEdited={priceRowToBeEdited}
+                        setPriceRowToBeEdited={setPriceRowToBeEdited}
                         setPriceRowsToBeUpdated={setPriceRowsToBeUpdated}
                         priceRowsToBeUpdated={priceRowsToBeUpdated}
                       />
-                      <QuantityCell row={row} register={register} />
+                      <QuantityCell
+                        row={row}
+                        register={register}
+                        quantityRowToBeEdited={quantityRowToBeEdited}
+                        setQuantityRowToBeEdited={setQuantityRowToBeEdited}
+                        setQuantityRowsToBeUpdated={setQuantityRowsToBeUpdated}
+                        quantityRowsToBeUpdated={quantityRowsToBeUpdated}
+                      />
                     </TableRow>
                   ))}
               </TableBody>
