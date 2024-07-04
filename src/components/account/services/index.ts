@@ -3,6 +3,8 @@ import { BASE_URL } from "@/constants/urls";
 import { fetchIdCookie } from "@/layout/navbar/services";
 import axios from "axios";
 import { UpdateUserInfoParams, UserInfo } from "../hooks/types";
+import useOrderTabStore from "@/stores/useOrderTabStore";
+import { IOrder } from "@/layout/navbar/hooks/types";
 
 export const getUserInfo = async () => {
   const userId = fetchIdCookie();
@@ -10,10 +12,17 @@ export const getUserInfo = async () => {
   return response.data;
 };
 
-export const getUserOrdersHistory = async () => {
+export const getUserOrdersHistory = async (orderTab: string) => {
   const userId = fetchIdCookie();
   const response = await axios.get(`${BASE_URL}/order/${userId}`);
-  return response.data.ordersHistory;
+  const userOrdersHistory = response.data.ordersHistory;
+  if (orderTab === "") {
+    return userOrdersHistory;
+  }
+  const filteredOrderHistory = userOrdersHistory.filter(
+    (item: IOrder) => item.orderStatus === orderTab.toLocaleLowerCase()
+  );
+  return filteredOrderHistory;
 };
 
 export const updateUserInfo = async ({

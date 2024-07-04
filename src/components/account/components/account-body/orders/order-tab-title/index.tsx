@@ -4,9 +4,13 @@ import React from "react";
 
 type OrderTabTitleProps = {
   title: string;
+  numberOfOrders: number;
 };
 
-export default function OrderTabTitle({ title }: OrderTabTitleProps) {
+export default function OrderTabTitle({
+  title,
+  numberOfOrders,
+}: OrderTabTitleProps) {
   const { orderTab, setOrderTab } = useOrderTabStore();
   const handleTabChange = (str: string) => {
     setOrderTab(str);
@@ -46,7 +50,7 @@ export default function OrderTabTitle({ title }: OrderTabTitleProps) {
           color: title === orderTab ? "white" : "inherit",
         }}
       >
-        0
+        {numberOfOrders ? numberOfOrders : 0}
       </Box>
     </Stack>
   );

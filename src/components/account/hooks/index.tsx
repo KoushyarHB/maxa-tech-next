@@ -15,10 +15,10 @@ export const useGetUserInfo = () => {
   });
 };
 
-export const useGetUserOrdersHistory = () => {
+export const useGetUserOrdersHistory = (orderTab: string) => {
   return useQuery({
-    queryKey: ["user-orders-history"],
-    queryFn: () => getUserOrdersHistory(),
+    queryKey: ["user-orders-history", orderTab],
+    queryFn: () => getUserOrdersHistory(orderTab),
   });
 };
 
