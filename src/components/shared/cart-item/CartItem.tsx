@@ -25,15 +25,12 @@ const CartItemDetails = ({ cartItemProps, changeComponent }: Props) => {
   const removeMutation = useRemoveCartItem();
   const increaseMutation = useIncreaseCartItemQuantity();
   const decreaseMutation = useDecreaseCartItemQuantity();
-
   const handleRemoveCartProduct = (id: number) => {
     removeMutation.mutate(id);
   };
-
   const handleIncreaseQuantity = (id: number) => {
     increaseMutation.mutate(id);
   };
-
   const handleDecreaseQuantity = (id: number) => {
     decreaseMutation.mutate(id);
   };
@@ -51,6 +48,7 @@ const CartItemDetails = ({ cartItemProps, changeComponent }: Props) => {
       height: "74px",
     },
   };
+
   return (
     <Box sx={{ ...boxStyles[changeComponent], mr: "10px", my: "8px" }}>
       <Box

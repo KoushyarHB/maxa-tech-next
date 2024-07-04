@@ -8,12 +8,14 @@ export interface IProduct {
   currency: string;
   availableOnline: boolean;
   availableInStore: boolean;
+  availableQuantity: number;
   seller: string;
   sellerId: string;
   customerRating: number;
   numReviews: number;
   thumbnailImage: string;
   largeImage: string;
+  categoryName: string;
   categoryPath: string;
   brandName: string;
   color: string;

@@ -42,6 +42,8 @@ export interface IOrder {
   orderTotal: number;
   orderReceiverName: string;
   orderAddress: string;
+  orderPostalCode: string;
+  orderPhoneNumber: string;
   // orderPaymentMethod: string;
   // orderTransactionId: number;
   // orderShippingMethod: string;

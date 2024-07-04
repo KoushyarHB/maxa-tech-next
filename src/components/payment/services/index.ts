@@ -52,10 +52,13 @@ export const placeOrder = async () => {
     const userInfo = userResponse.data;
     const orderReceiverName = userInfo.userName;
     const orderAddress = userInfo.address;
+    const orderPostalCode = userInfo.postalCode;
+    const orderPhoneNumber = userInfo.phoneNumber;
     const cartResponse = await axios.get(`${BASE_URL}/cart/${userId}`);
     const userCart = cartResponse.data.cartProducts;
     const orderItems: ICartProducts[] = [];
     userCart.map((item: ICartProducts) => orderItems.push(item));
+
     const newOrder = {
       orderCode,
       orderStatus,
@@ -63,6 +66,8 @@ export const placeOrder = async () => {
       orderTotal,
       orderReceiverName,
       orderAddress,
+      orderPostalCode,
+      orderPhoneNumber,
       orderItems,
     };
     const updatedUserOrdersHistory = [newOrder, ...userOrdersHistory];
