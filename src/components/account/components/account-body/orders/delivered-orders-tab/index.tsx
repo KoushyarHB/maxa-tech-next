@@ -16,7 +16,7 @@ export default function DeliveredOrdersTab() {
   return (
     <Stack>
       {data?.map((item: IOrder) => (
-        <Box key={item.orderReceiverName}>
+        <Box key={item.orderCode}>
           <OrderCard orderCardProps={item} />
         </Box>
       ))}

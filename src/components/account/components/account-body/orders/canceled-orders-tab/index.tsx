@@ -16,7 +16,7 @@ export default function CanceledOrdersTab() {
   return (
     <Stack>
       {data?.map((item: IOrder) => (
-        <Box key={item.orderReceiverName}>
+        <Box key={item.orderCode}>
           <OrderCard orderCardProps={item} />
         </Box>
       ))}
