@@ -28,10 +28,9 @@ export default function Hero() {
             sx={{ fontSize: "32px", marginTop: "50px" }}
             variant="h2"
             component="h2"
-            gutterBottom
           >
-            "Join the{" "}
-            <span style={{ color: "#F45E0C" }}>digital revolution</span>"
+            &quot;Join the{" "}
+            <span style={{ color: "#F45E0C" }}>digital revolution</span>&quot;
           </Typography>
           <Button
             variant="contained"
