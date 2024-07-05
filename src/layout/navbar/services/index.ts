@@ -1,20 +1,21 @@
 import { BASE_URL } from "@/constants/urls";
 import axios from "axios";
+import { deleteCookie, getCookie, setCookie } from "cookies-next";
+import { toast } from "react-toastify";
 import {
   ICart,
   ICartProducts,
-  IOrder,
+  IOrders,
   IUser,
   IUserSignInForm,
   IWishlist,
 } from "../hooks/types";
-import { getCookie, setCookie, deleteCookie } from "cookies-next";
 
 export const signUpNewUser = async (
   newUserData: IUser,
   cartData: ICart,
   wishlistData: IWishlist,
-  orderData: IOrder
+  orderData: IOrders
 ) => {
   try {
     const existingUsersDatabase = await axios.get(`${BASE_URL}/users`);
@@ -93,9 +94,11 @@ export const removeCartItem = async (productId: number): Promise<any> => {
     const updateResponse = await axios.patch(`${BASE_URL}/cart/${userId}`, {
       cartProducts: remainingCartProducts,
     });
+    toast.warning("Item removed from your shopping cart");
     return updateResponse.data;
   } catch (error) {
-    console.error("Error deleting cart item:", error);
+    toast.error("Error removing cart item");
+    console.error("Error removing cart item:", error);
     throw error;
   }
 };
@@ -113,8 +116,15 @@ export const increaseCartItemQuantity = async (
     const productAvailableQuantity = productResponse.data.availableQuantity;
     const updatedCartProducts = cartData.map((product: ICartProducts) => {
       if (product.productId === productId) {
-        if (product.quantity < productAvailableQuantity) {
-          product.quantity++;
+        if (product.quantity < 10) {
+          if (product.quantity < productAvailableQuantity) {
+            product.quantity++;
+            toast.info("Item quantity increased");
+          } else {
+            toast.error("No item left in our inventory!");
+          }
+        } else {
+          toast.error("You've reached purchase limit for this item");
         }
       }
       return product;
@@ -124,7 +134,8 @@ export const increaseCartItemQuantity = async (
     });
     return updateResponse.data;
   } catch (error) {
-    console.error("Error deleting cart item:", error);
+    toast.error("Error increasing item quantity");
+    console.error("Error increasing item quantity:", error);
     throw error;
   }
 };
@@ -140,6 +151,7 @@ export const decreaseCartItemQuantity = async (
       if (product.productId === productId) {
         if (product.quantity > 1) {
           product.quantity--;
+          toast.info("Item quantity decreased");
         }
       }
       return product;
@@ -149,7 +161,8 @@ export const decreaseCartItemQuantity = async (
     });
     return updateResponse.data;
   } catch (error) {
-    console.error("Error deleting cart item:", error);
+    toast.error("Error decreasing item quantity");
+    console.error("Error decreasing item quantity:", error);
     throw error;
   }
 };

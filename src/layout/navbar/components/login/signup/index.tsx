@@ -1,4 +1,11 @@
-import React from "react";
+import { useSignUpNewUser } from "@/layout/navbar/hooks";
+import {
+  setAccessCookie,
+  setIdCookie,
+  setRoleCookie,
+} from "@/layout/navbar/services";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import GoogleIcon from "@mui/icons-material/Google";
 import {
   Box,
   Button,
@@ -13,15 +20,9 @@ import {
   Typography,
 } from "@mui/material";
 import Link from "next/link";
-import GoogleIcon from "@mui/icons-material/Google";
-import FacebookIcon from "@mui/icons-material/Facebook";
+import React from "react";
 import { useForm } from "react-hook-form";
-import {
-  setAccessCookie,
-  setIdCookie,
-  setRoleCookie,
-} from "@/layout/navbar/services";
-import { useSignUpNewUser } from "@/layout/navbar/hooks";
+import { toast } from "react-toastify";
 
 type Props = {
   setIsSignIn: React.Dispatch<React.SetStateAction<boolean>>;
@@ -68,9 +69,11 @@ export default function SignUp({ setIsSignIn, onClose }: Props) {
           setAccessCookie(true);
           setRoleCookie(userData.role);
           onClose();
+          toast.success(`Hi ${userData.userName}, welcome to MAXA Tech`);
         },
         onError: (error) => {
           console.error("Sign-up failed:", error.message);
+          toast.error("Sign up attempt failed");
         },
       }
     );

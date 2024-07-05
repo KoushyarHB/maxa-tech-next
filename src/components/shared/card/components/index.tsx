@@ -1,15 +1,15 @@
-import { Box, Button, CardMedia, Divider, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 
 import React from "react";
 // import CollorPallet from "./color-pallet";
-import heart from "@/assets/images/heart.svg";
 import heartFill from "@/assets/images/heart-fill.svg";
-import { IProduct } from "@/components/home/hooks/types";
-import Link from "next/link";
+import heart from "@/assets/images/heart.svg";
 import shoppingCard from "@/assets/images/shopping-cart.svg";
-import { addToCart, addToWishlist } from "../services";
-import { useAddToCart, useIsInWishlist } from "../hooks";
+import { IProduct } from "@/components/home/hooks/types";
 import { queryClient } from "@/pages/_app";
+import Link from "next/link";
+import { useAddToCart, useIsInWishlist } from "../hooks";
+import { addToWishlist } from "../services";
 
 type Hover = {
   hoverMode: "landingHover" | "productHover";

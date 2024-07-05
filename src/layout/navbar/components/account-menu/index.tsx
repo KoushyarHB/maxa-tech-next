@@ -4,28 +4,28 @@ import {
   ListItemIcon,
   Menu,
   MenuItem,
-  Stack,
   Tooltip,
   Typography,
 } from "@mui/material";
 import React from "react";
 
-import profileCircle from "@/assets/images/account-menu-icons/profile-circle.png";
 import bag from "@/assets/images/account-menu-icons/bag-2.png";
-import heart from "@/assets/images/account-menu-icons/heart.png";
 import dollarCircle from "@/assets/images/account-menu-icons/dollar-circle.png";
+import heart from "@/assets/images/account-menu-icons/heart.png";
 import logout from "@/assets/images/account-menu-icons/logout.png";
-import user from "@/assets/images/navbar-icons/user.png";
+import profileCircle from "@/assets/images/account-menu-icons/profile-circle.png";
 import dashboard from "@/assets/images/dashboard.svg";
+import user from "@/assets/images/navbar-icons/user.png";
+import useTabStore from "@/stores/useTabStore";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { useGetUserInfo } from "../../hooks";
 import {
   removeAccessCookie,
   removeIdCookie,
   removeRoleCookie,
 } from "../../services";
-import Link from "next/link";
-import useTabStore from "@/stores/useTabStore";
-import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 export default function AccountMenu() {
   const { setTab } = useTabStore();
@@ -49,6 +49,7 @@ export default function AccountMenu() {
     removeIdCookie();
     removeRoleCookie();
     handleCloseAccountMenu();
+    toast.info("You logged out of MAXA tech. see you back soon!");
   };
 
   const handleRedirect = (str: string) => {
@@ -133,7 +134,7 @@ export default function AccountMenu() {
           </Box>
         </MenuItem>
         {userRole !== "admin" ? (
-          <>
+          <Box>
             <MenuItem
               onClick={() => {
                 handleRedirect("Orders");
@@ -175,7 +176,7 @@ export default function AccountMenu() {
                 Payments
               </Box>
             </MenuItem>
-          </>
+          </Box>
         ) : (
           <Link href={"/dashboard"}>
             <MenuItem>
