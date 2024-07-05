@@ -1,4 +1,12 @@
-import { Box, Button, IconButton, Menu, Stack, Tooltip } from "@mui/material";
+import {
+  Badge,
+  Box,
+  Button,
+  IconButton,
+  Menu,
+  Stack,
+  Tooltip,
+} from "@mui/material";
 import React from "react";
 import bag from "@/assets/images/navbar-icons/bag.png";
 import {
@@ -48,9 +56,11 @@ export default function CartMenu() {
           onClick={handleCloseCartMenu}
         />
       )}
-      <Tooltip title="Open settings">
+      <Tooltip title="Your Shopping Cart">
         <IconButton onClick={handleOpenCartMenu} sx={{ p: 0 }}>
-          <Box component="img" src={bag.src} />
+          <Badge badgeContent={cartItems?.length} color="primary">
+            <Box component="img" src={bag.src} />
+          </Badge>
         </IconButton>
       </Tooltip>
 
